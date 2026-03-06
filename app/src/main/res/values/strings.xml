@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LifeFlow</string>
+    <string name="tagline">Connecting Lives Through Blood Donation</string>
+    <string name="welcome_desc">Join thousands of donors and save lives with AI-powered blood matching</string>
+    <string name="save_lives">Save Lives</string>
+    <string name="donate_blood">Donate Blood</string>
+    <string name="get_help">Get Help</string>
+    <string name="login">Login</string>
+    <string name="get_started">Get Started</string>
+</resources>

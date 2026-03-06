@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="icon" format="reference" />
+    <attr name="title" format="string" />
+
+    <declare-styleable name="NotificationItem">
+        <attr name="icon" />
+        <attr name="icon_bg" format="reference" />
+        <attr name="title" />
+        <attr name="message" format="string" />
+        <attr name="time" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="SettingItem">
+        <attr name="icon" />
+        <attr name="title" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.LifeFlow"
+        android:usesCleartextTraffic="true">
+
+        <!-- Google Maps API Key -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyA_YOUR_ACTUAL_API_KEY_HERE" />
+
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Onboarding1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Onboarding2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Onboarding3Activity"
+            android:exported="false" />
+        <activity
+            android:name=".RoleSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OtpVerificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegistrationSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonorProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonorDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AvailabilityStatusActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonorRequirementsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientWelcomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EligibilityCheckActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BookAppointmentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AppointmentConfirmationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonationHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonorSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonorNotificationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PrivacyAndConsentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AccessibilityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HelpAndSupportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AIAssistantActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LogoutConfirmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientDashboardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AiMatchesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RequestTrackingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EmergencyRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SmartNotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NearbyDonorsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PatientNotificationsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RequestHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CancelBloodRequestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DonorMapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LiveTrackingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatInboxActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

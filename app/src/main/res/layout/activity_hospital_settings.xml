@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".HospitalSettingsActivity">
+
+    <!-- Header -->
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/text_dark" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Hospital Settings"
+        android:textColor="@color/text_dark"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_back"
+        app:layout_constraintStart_toEndOf="@id/btn_back"
+        app:layout_constraintTop_toTopOf="@id/btn_back" />
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_logout"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Hospital Profile -->
+            <LinearLayout
+                android:id="@+id/item_profile"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_hospital"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="Hospital Profile" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+            <!-- Inventory Management -->
+            <LinearLayout
+                android:id="@+id/item_inventory"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_trending_up"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="Inventory Management" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+            <!-- AI Insights Settings -->
+            <LinearLayout
+                android:id="@+id/item_ai_settings"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_brain"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="AI Insights Settings" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+
+            <!-- Alert Preferences -->
+            <LinearLayout
+                android:id="@+id/item_alerts"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_bell"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="Alert Preferences" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+            <!-- Security & Compliance -->
+            <LinearLayout
+                android:id="@+id/item_security"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_lock"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="Security &amp; Compliance" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+            <!-- Language -->
+            <LinearLayout
+                android:id="@+id/item_language"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_globe"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="Language" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+            <!-- Accessibility -->
+            <LinearLayout
+                android:id="@+id/item_accessibility"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_accessibility"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="Accessibility" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+            <!-- Help & Support -->
+            <LinearLayout
+                android:id="@+id/item_help"
+                style="@style/SettingsItemStyle">
+                <FrameLayout style="@style/SettingsIconBgStyle">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_help"
+                        app:tint="@color/blood_red" />
+                </FrameLayout>
+                <TextView
+                    style="@style/SettingsTextStyle"
+                    android:text="Help &amp; Support" />
+                <ImageView style="@style/SettingsChevronStyle" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Logout Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="24dp"
+        android:background="@drawable/bg_logout_button"
+        android:text="Logout"
+        android:textAllCaps="false"
+        android:textColor="@color/blood_red"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

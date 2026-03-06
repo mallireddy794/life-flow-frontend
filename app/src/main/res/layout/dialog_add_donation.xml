@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Donation History"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/bright_red"
+        android:layout_marginBottom="20dp" />
+
+    <EditText
+        android:id="@+id/et_blood_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Blood Group (e.g. O+)"
+        android:layout_marginBottom="12dp"
+        android:inputType="textCapCharacters" />
+
+    <EditText
+        android:id="@+id/et_units"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Units"
+        android:layout_marginBottom="12dp"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/et_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Location"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/et_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Date (YYYY-MM-DD HH:MM:SS)"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/et_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Notes (Optional)"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:id="@+id/btn_save_donation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Donation"
+        android:backgroundTint="@color/bright_red"
+        android:textColor="@color/white" />
+
+</LinearLayout>

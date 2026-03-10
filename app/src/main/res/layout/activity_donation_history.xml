@@ -9,27 +9,30 @@
     tools:context=".DonationHistoryActivity">
 
     <!-- Header -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         app:layout_constraintTop_toTopOf="parent">
         <ImageView
             android:id="@+id/btn_back"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_back" />
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:padding="4dp"
+            android:src="@drawable/ic_back"
+            app:tint="@color/text_dark" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_marginStart="16dp"
+            android:fontFamily="sans-serif-medium"
             android:text="Donation History"
-            android:textColor="@color/text_dark"
-            android:textSize="22sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
+            android:textColor="@color/text_slate"
+            android:textSize="24sp" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

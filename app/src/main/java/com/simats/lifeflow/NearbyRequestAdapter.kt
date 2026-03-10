@@ -46,6 +46,7 @@ class NearbyRequestAdapter(private var requests: List<NearbyRequest>) :
             val context = holder.itemView.context
             val intent = Intent(context, EligibilityCheckActivity::class.java)
             intent.putExtra("FROM_ACCEPT", true)
+            intent.putExtra("RECEIVER_ID", request.patientId)
             intent.putExtra("RECEIVER_NAME", request.hospitalName)
             intent.putExtra("BLOOD_GROUP", request.bloodGroup)
             intent.putExtra("UNITS", request.units)

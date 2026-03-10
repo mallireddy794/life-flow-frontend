@@ -44,16 +44,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="City Hospital"
-                    android:textColor="@color/text_dark"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/text_slate"
+                    android:textSize="17sp"
+                    android:fontFamily="sans-serif-medium" />
 
                 <TextView
                     android:id="@+id/tv_units"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2 Units Required"
-                    android:textColor="@color/text_gray"
+                    android:textColor="@color/text_cool_gray"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -65,11 +65,11 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/bg_urgent_badge"
                 android:paddingHorizontal="12dp"
-                android:paddingVertical="4dp"
+                android:paddingVertical="5dp"
                 android:text="Urgent"
-                android:textColor="@color/bright_red"
+                android:textColor="#E53E3E"
                 android:textSize="12sp"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium" />
         </RelativeLayout>
 
         <View
@@ -88,7 +88,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_location"
-                app:tint="@color/text_gray" />
+                app:tint="#A0AEC0" />
 
             <TextView
                 android:id="@+id/tv_location"
@@ -96,7 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="2.5 km away"
-                android:textColor="@color/text_gray"
+                android:textColor="@color/text_cool_gray"
                 android:textSize="14sp" />
 
             <View
@@ -108,9 +108,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Donate Now"
-                android:textColor="@color/bright_red"
+                android:textColor="@color/blood_red"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:fontFamily="sans-serif-medium" />
 
             <ImageView
                 android:layout_width="16dp"

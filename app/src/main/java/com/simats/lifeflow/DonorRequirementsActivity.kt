@@ -54,16 +54,15 @@ class DonorRequirementsActivity : AppCompatActivity() {
             Toast.makeText(this, "Request declined.", Toast.LENGTH_SHORT).show()
         }
 
-        // Fix: Accept buttons were only set inside fetchPatients, adding them here to be safe and adding eligibility check listener
+        // Default click listeners for static/placeholder data
         btnAccept1.setOnClickListener {
-            // If patient name is already loaded from fetchPatients, use it
             val name = tvPatientName1.text.toString()
-            acceptRequest(101, name) // Using dummy ID 101 as fallback
+            acceptRequest(101, name)
         }
 
         btnAccept2.setOnClickListener {
             val name = tvPatientName2.text.toString()
-            acceptRequest(102, name) // Using dummy ID 102 as fallback
+            acceptRequest(102, name)
         }
 
         findViewById<Button>(R.id.btn_check_eligibility).setOnClickListener {
@@ -125,14 +124,16 @@ class DonorRequirementsActivity : AppCompatActivity() {
                         card1.visibility = View.VISIBLE
                         name1.text = patients[0].name
                         findViewById<Button>(R.id.btn_accept_1).setOnClickListener {
-                            acceptRequest(patients[0].id, patients[0].name)
+                            // Fixed: Using Elvis operator to handle nullable id and ensuring it's an Int
+                            acceptRequest(patients[0].id ?: -1, patients[0].name)
                         }
                         
                         if (patients.size > 1) {
                             card2.visibility = View.VISIBLE
                             name2.text = patients[1].name
                             findViewById<Button>(R.id.btn_accept_2).setOnClickListener {
-                                acceptRequest(patients[1].id, patients[1].name)
+                                // Fixed: Using Elvis operator to handle nullable id and ensuring it's an Int
+                                acceptRequest(patients[1].id ?: -1, patients[1].name)
                             }
                         } else {
                             card2.visibility = View.GONE

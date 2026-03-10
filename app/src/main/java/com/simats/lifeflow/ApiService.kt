@@ -43,12 +43,6 @@ interface ApiService {
     @PUT("admin/reject/{request_id}")
     fun rejectRequest(@Path("request_id") requestId: Int): Call<Map<String, String>>
 
-    @PUT("hospital/profile/{user_id}")
-    fun updateHospitalProfile(@Path("user_id") userId: Int, @Body data: HospitalProfile): Call<Map<String, String>>
-
-    @GET("hospital/requests/{user_id}")
-    fun viewHospitalRequests(@Path("user_id") userId: Int): Call<List<HospitalRequest>>
-
     @POST("chat/send")
     fun sendMessage(@Body data: ChatMessage): Call<Map<String, String>>
 

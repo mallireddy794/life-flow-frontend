@@ -2,6 +2,7 @@ package com.simats.lifeflow
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.widget.*
@@ -85,6 +86,8 @@ class RegisterActivity : AppCompatActivity() {
             "role" to role
         )
 
+        Log.d("RegisterAPI", "Attempting signup at: /signup with data: $signupData")
+
         ApiClient.instance.signup(signupData).enqueue(object : Callback<Map<String, String>> {
             override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
                 if (response.isSuccessful) {
@@ -93,17 +96,21 @@ class RegisterActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
+                    val code = response.code()
                     val errorBody = response.errorBody()?.string()
+                    Log.e("RegisterAPI", "Error Code: $code, Body: $errorBody")
+                    
                     val message = try {
                         JSONObject(errorBody).getString("error")
                     } catch (e: Exception) {
-                        response.message()
+                        response.message() ?: "Unknown error"
                     }
-                    Toast.makeText(this@RegisterActivity, "Registration failed: $message", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RegisterActivity, "Registration failed ($code): $message", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
+                Log.e("RegisterAPI", "Network Failure", t)
                 Toast.makeText(this@RegisterActivity, "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })

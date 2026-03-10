@@ -21,5 +21,8 @@
     <color name="bg_warning_yellow">#FFFBEB</color>
     <color name="ai_purple">#A855F7</color>
     <color name="bg_ai_purple">#FAF5FF</color>
+    <color name="text_slate">#2D3748</color>
+    <color name="text_cool_gray">#718096</color>
+    <color name="success_emerald">#38A169</color>
     <color name="primary_blue">#3B82F6</color>
 </resources>

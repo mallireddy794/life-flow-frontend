@@ -46,15 +46,9 @@ class AppointmentConfirmationActivity : AppCompatActivity() {
             Toast.makeText(this, "Error: User session not found.", Toast.LENGTH_LONG).show()
         }
 
-        btnHome.setOnClickListener {
-            val intent = Intent(this, DonorDashboardActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-
         if (fromAccept) {
-            btnChat.text = "Chat with Patient"
-            btnChat.setOnClickListener {
+            btnHome.text = "Chat with Patient"
+            btnHome.setOnClickListener {
                 val intent = Intent(this, PatientChatActivity::class.java)
                 intent.putExtra("SENDER_ID", userId)
                 intent.putExtra("RECEIVER_ID", receiverId)
@@ -63,15 +57,18 @@ class AppointmentConfirmationActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-            
-            // Allow clicking history from a different way or just change logic?
-            // Let's make btnHome go to dashboard where they can see history.
         } else {
-            btnChat.setOnClickListener {
-                val intent = Intent(this, DonationHistoryActivity::class.java)
-                intent.putExtra("user_id", userId)
+            btnHome.setOnClickListener {
+                val intent = Intent(this, DonorDashboardActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
+        }
+
+        btnChat.setOnClickListener {
+            val intent = Intent(this, DonationHistoryActivity::class.java)
+            intent.putExtra("user_id", userId)
+            startActivity(intent)
         }
     }
 

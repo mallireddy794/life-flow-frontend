@@ -8,12 +8,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DonorRequirementsActivity : AppCompatActivity() {
+class DonorRequirementsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,19 +120,25 @@ class DonorRequirementsActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val patients = response.body() ?: emptyList()
                     if (patients.isNotEmpty()) {
+                        val p1 = patients[0]
+                        val p1Id = p1.id ?: -1
+                        val p1Name = p1.name ?: "Unknown"
+                        
                         card1.visibility = View.VISIBLE
-                        name1.text = patients[0].name
+                        name1.text = p1Name
                         findViewById<Button>(R.id.btn_accept_1).setOnClickListener {
-                            // Fixed: Using Elvis operator to handle nullable id and ensuring it's an Int
-                            acceptRequest(patients[0].id ?: -1, patients[0].name)
+                            acceptRequest(p1Id, p1Name)
                         }
                         
                         if (patients.size > 1) {
+                            val p2 = patients[1]
+                            val p2Id = p2.id ?: -1
+                            val p2Name = p2.name ?: "Unknown"
+                            
                             card2.visibility = View.VISIBLE
-                            name2.text = patients[1].name
+                            name2.text = p2Name
                             findViewById<Button>(R.id.btn_accept_2).setOnClickListener {
-                                // Fixed: Using Elvis operator to handle nullable id and ensuring it's an Int
-                                acceptRequest(patients[1].id ?: -1, patients[1].name)
+                                acceptRequest(p2Id, p2Name)
                             }
                         } else {
                             card2.visibility = View.GONE

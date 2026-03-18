@@ -16,7 +16,7 @@ interface ApiService {
     @POST("verify-otp")
     fun verifyOtp(@Body data: Map<String, String>): Call<Map<String, String>>
 
-    @PUT("reset-password")
+    @POST("reset-password")
     fun resetPassword(@Body data: Map<String, String>): Call<Map<String, String>>
 
     @PUT("donor/profile/{user_id}")

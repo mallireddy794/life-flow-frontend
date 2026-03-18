@@ -54,6 +54,14 @@
             android:orientation="vertical"
             android:padding="20dp">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Hospitals within 5km radius"
+                android:textColor="@color/text_gray"
+                android:textSize="14sp" />
+
             <!-- Hospital 1 -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -99,25 +107,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="123 Main St"
+                    android:text="1.2 km away • 123 Main St"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_loc1"
                     app:layout_constraintStart_toEndOf="@id/iv_loc1"
                     app:layout_constraintTop_toTopOf="@id/iv_loc1" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_contact1"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_button_solid"
-                    android:text="Contact Hospital"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/iv_loc1" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -166,25 +161,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="456 Oak Ave"
+                    android:text="2.8 km away • 456 Oak Ave"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_loc2"
                     app:layout_constraintStart_toEndOf="@id/iv_loc2"
                     app:layout_constraintTop_toTopOf="@id/iv_loc2" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_contact2"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_button_solid"
-                    android:text="Contact Hospital"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/iv_loc2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -233,25 +215,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="789 Elm Rd"
+                    android:text="4.1 km away • 789 Elm Rd"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_loc3"
                     app:layout_constraintStart_toEndOf="@id/iv_loc3"
                     app:layout_constraintTop_toTopOf="@id/iv_loc3" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_contact3"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_button_solid"
-                    android:text="Contact Hospital"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/iv_loc3" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

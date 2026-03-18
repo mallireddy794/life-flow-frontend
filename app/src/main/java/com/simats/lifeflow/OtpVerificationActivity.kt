@@ -9,12 +9,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OtpVerificationActivity : AppCompatActivity() {
+class OtpVerificationActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +63,7 @@ class OtpVerificationActivity : AppCompatActivity() {
                     if (fromForgotPassword) {
                         val intent = Intent(this@OtpVerificationActivity, ResetPasswordActivity::class.java)
                         intent.putExtra("recovery_email", email)
+                        intent.putExtra("otp_code", otp) // Pass OTP to ResetPasswordActivity
                         startActivity(intent)
                     } else {
                         val intent = Intent(this@OtpVerificationActivity, RegistrationSuccessActivity::class.java)

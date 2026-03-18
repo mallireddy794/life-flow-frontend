@@ -3,16 +3,16 @@ package com.simats.lifeflow
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ResetPasswordActivity : AppCompatActivity() {
+class ResetPasswordActivity : BaseActivity() {
 
     private var isNewPasswordVisible = false
     private var isConfirmPasswordVisible = false
@@ -29,18 +29,20 @@ class ResetPasswordActivity : AppCompatActivity() {
         val btnSubmit = findViewById<Button>(R.id.btn_submit)
 
         val email = intent.getStringExtra("recovery_email") ?: ""
+        val otp = intent.getStringExtra("otp_code") ?: ""
+        Log.d("ResetPassword", "Email received: $email, OTP received: $otp")
 
         btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
         ivShowNewPassword.setOnClickListener {
-            isNewPasswordVisible = !isNewPasswordVisible
+            isNewPasswordVisible = !isPasswordVisible(etNewPassword)
             togglePasswordVisibility(etNewPassword, ivShowNewPassword, isNewPasswordVisible)
         }
 
         ivShowConfirmPassword.setOnClickListener {
-            isConfirmPasswordVisible = !isConfirmPasswordVisible
+            isConfirmPasswordVisible = !isPasswordVisible(etConfirmPassword)
             togglePasswordVisibility(etConfirmPassword, ivShowConfirmPassword, isConfirmPasswordVisible)
         }
 
@@ -63,15 +65,31 @@ class ResetPasswordActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            updatePasswordInBackend(email, newPassword)
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Session error: Email not found. Please try again from Forgot Password.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
+            }
+
+            updatePasswordInBackend(email, otp, newPassword)
         }
     }
 
-    private fun updatePasswordInBackend(email: String, newPass: String) {
-        val resetData = mapOf(
+    private fun isPasswordVisible(editText: EditText): Boolean {
+        return editText.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+    }
+
+    private fun updatePasswordInBackend(email: String, otp: String, newPass: String) {
+        val resetData = mutableMapOf(
             "email" to email,
             "new_password" to newPass
         )
+
+        if (otp.isNotEmpty()) {
+            resetData["otp"] = otp
+        }
+
+        Log.d("ResetPassword", "Attempting password reset for: $email")
+        Log.d("ResetPassword", "Request body: $resetData")
 
         ApiClient.instance.resetPassword(resetData).enqueue(object : Callback<Map<String, String>> {
             override fun onResponse(call: Call<Map<String, String>>, response: Response<Map<String, String>>) {
@@ -82,16 +100,29 @@ class ResetPasswordActivity : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 } else {
-                    Toast.makeText(this@ResetPasswordActivity, "Error: ${response.message()}", Toast.LENGTH_SHORT).show()
+                    val errorMsg = try {
+                        val errorBody = response.errorBody()?.string() ?: ""
+                        Log.e("ResetPassword", "Error Body: $errorBody")
+                        when {
+                            errorBody.contains("error") -> org.json.JSONObject(errorBody).getString("error")
+                            errorBody.contains("message") -> org.json.JSONObject(errorBody).getString("message")
+                            else -> response.message() ?: "Unknown error"
+                        }
+                    } catch (e: Exception) {
+                        response.message() ?: "Unknown error"
+                    }
+
+                    Log.e("ResetPassword", "Reset failed: $errorMsg")
+                    Toast.makeText(this@ResetPasswordActivity, "Reset failed: $errorMsg", Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<Map<String, String>>, t: Throwable) {
+                Log.e("ResetPassword", "Network Error", t)
                 Toast.makeText(this@ResetPasswordActivity, "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
-
     private fun togglePasswordVisibility(editText: EditText, imageView: ImageView, isVisible: Boolean) {
         if (isVisible) {
             editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD

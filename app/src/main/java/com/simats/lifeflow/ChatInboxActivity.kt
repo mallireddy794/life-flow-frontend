@@ -7,13 +7,12 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChatInboxActivity : AppCompatActivity() {
+class ChatInboxActivity : BaseActivity() {
 
     private lateinit var rvInbox: RecyclerView
     private lateinit var tvEmpty: TextView
@@ -34,12 +33,17 @@ class ChatInboxActivity : AppCompatActivity() {
         btnBack.setOnClickListener { finish() }
 
         adapter = InboxAdapter { inboxItem ->
-            val intent = Intent(this, PatientChatActivity::class.java)
-            intent.putExtra("SENDER_ID", userId)
-            intent.putExtra("RECEIVER_ID", inboxItem.other_user.id)
-            intent.putExtra("RECEIVER_NAME", inboxItem.other_user.name)
-            intent.putExtra("CHAT_STATUS", "CONNECTED")
-            startActivity(intent)
+            val otherUser = inboxItem.other_user
+            if (otherUser != null && otherUser.id != null) {
+                val intent = Intent(this, PatientChatActivity::class.java)
+                intent.putExtra("SENDER_ID", userId)
+                intent.putExtra("RECEIVER_ID", otherUser.id)
+                intent.putExtra("RECEIVER_NAME", otherUser.name ?: "Unknown")
+                intent.putExtra("CHAT_STATUS", "CONNECTED")
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Cannot open chat: User info missing", Toast.LENGTH_SHORT).show()
+            }
         }
         rvInbox.adapter = adapter
 

@@ -8,10 +8,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
-class BookAppointmentActivity : AppCompatActivity() {
+class BookAppointmentActivity : BaseActivity() {
 
     private var selectedTimeSlot: TextView? = null
 

@@ -2,9 +2,8 @@ package com.simats.lifeflow
 
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
 
-class HelpAndSupportActivity : AppCompatActivity() {
+class HelpAndSupportActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help_support)

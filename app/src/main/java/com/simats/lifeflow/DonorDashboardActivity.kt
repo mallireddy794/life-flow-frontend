@@ -5,28 +5,31 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.SwitchCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DonorDashboardActivity : AppCompatActivity() {
+class DonorDashboardActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var switchAvailability: SwitchCompat
     private lateinit var tvAvailabilityStatus: TextView
-    private lateinit var nearbyRequestsSection: LinearLayout
+    private lateinit var nearbyRequestsSection: ConstraintLayout
     private lateinit var rvNearbyRequests: RecyclerView
     private lateinit var adapter: NearbyRequestAdapter
     private var isInitializing = true
+    private lateinit var btnChatPatient: AppCompatButton
+    private lateinit var btnViewRequirements: AppCompatButton
     private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,18 +52,17 @@ class DonorDashboardActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("donor_prefs", Context.MODE_PRIVATE)
 
         // Initialize Views
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
         val btnNotification = findViewById<ImageView>(R.id.btn_notification)
-        val btnSettings = findViewById<ImageView>(R.id.btn_settings)
         switchAvailability = findViewById(R.id.switch_availability)
         tvAvailabilityStatus = findViewById(R.id.tv_availability_status)
         nearbyRequestsSection = findViewById(R.id.nearby_requests_section)
         rvNearbyRequests = findViewById(R.id.rv_nearby_requests)
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         
-        val btnChatPatient = findViewById<Button>(R.id.btn_chat_patient)
-        val btnViewRequirements = findViewById<Button>(R.id.btn_view_requirements)
-        val btnHistory = findViewById<Button>(R.id.btn_history)
-        val btnViewMap = findViewById<LinearLayout>(R.id.btn_view_map)
+        btnChatPatient = findViewById(R.id.btn_chat_patient)
+        btnViewRequirements = findViewById(R.id.btn_view_requirements)
+        val btnHistory = findViewById<AppCompatButton>(R.id.btn_history)
+        val btnViewMap = findViewById<LinearLayout>(R.id.btn_view_map_donor)
         val tvUserName = findViewById<TextView>(R.id.tv_user_name)
 
         // Set User Name
@@ -72,7 +74,7 @@ class DonorDashboardActivity : AppCompatActivity() {
         adapter = NearbyRequestAdapter(emptyList())
         rvNearbyRequests.adapter = adapter
 
-        btnViewMap.setOnClickListener {
+        btnViewMap?.setOnClickListener {
             val intent = Intent(this, DonorMapActivity::class.java)
             startActivity(intent)
         }
@@ -92,17 +94,8 @@ class DonorDashboardActivity : AppCompatActivity() {
         }
 
         // Click Listeners
-        btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
-        
         btnNotification.setOnClickListener {
             val intent = Intent(this, DonorNotificationsActivity::class.java)
-            startActivity(intent)
-        }
-
-        btnSettings.setOnClickListener {
-            val intent = Intent(this, DonorSettingsActivity::class.java)
             startActivity(intent)
         }
 
@@ -124,6 +117,25 @@ class DonorDashboardActivity : AppCompatActivity() {
             val intent = Intent(this, DonationHistoryActivity::class.java)
             intent.putExtra("user_id", userId)
             startActivity(intent)
+        }
+
+        // Bottom Navigation Logic
+        bottomNav.selectedItemId = R.id.nav_home
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_chat -> {
+                    val intent = Intent(this, ChatInboxActivity::class.java)
+                    startActivity(intent)
+                    false
+                }
+                R.id.nav_settings -> {
+                    val intent = Intent(this, DonorSettingsActivity::class.java)
+                    startActivity(intent)
+                    false
+                }
+                else -> false
+            }
         }
     }
 
@@ -163,11 +175,25 @@ class DonorDashboardActivity : AppCompatActivity() {
             tvAvailabilityStatus.text = "Available to Donate Now"
             tvAvailabilityStatus.setTextColor(ContextCompat.getColor(this, R.color.success_green))
             nearbyRequestsSection.visibility = View.VISIBLE
+            
+            // Enable Quick Actions
+            btnChatPatient.isEnabled = true
+            btnChatPatient.alpha = 1.0f
+            btnViewRequirements.isEnabled = true
+            btnViewRequirements.alpha = 1.0f
+            
             loadDummyRequests()
         } else {
             tvAvailabilityStatus.text = "Not Available"
             tvAvailabilityStatus.setTextColor(ContextCompat.getColor(this, R.color.text_gray))
             nearbyRequestsSection.visibility = View.GONE
+            
+            // Disable Quick Actions
+            btnChatPatient.isEnabled = false
+            btnChatPatient.alpha = 0.5f
+            btnViewRequirements.isEnabled = false
+            btnViewRequirements.alpha = 0.5f
+            
             adapter.updateList(emptyList())
         }
     }

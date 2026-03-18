@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 data class User(
     val id: Int? = null,
-    val name: String = "",
-    val email: String = "",
-    val phone: String = "",
-    val blood_group: String = "",
+    val name: String? = null,
+    val email: String? = null,
+    val phone: String? = null,
+    val blood_group: String? = null,
     val role: String? = null,
     val available_to_donate: Boolean = false
 )
@@ -78,7 +78,7 @@ data class InboxItem(
     val last_message: String = "",
     val last_time: String = "",
     val unread_count: Int = 0,
-    val other_user: User = User()
+    val other_user: User? = null
 )
 
 data class NearbyRequest(

@@ -1,19 +1,20 @@
 package com.simats.lifeflow
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -25,12 +26,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PatientMapActivity : AppCompatActivity(), OnMapReadyCallback {
+class PatientMapActivity : BaseActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var fused: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
     private var requiredBloodGroup: String = "O+"
     private lateinit var tvMatchingCount: TextView
+    private var isFirstLocationUpdate = true
     
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
 
@@ -55,15 +58,33 @@ class PatientMapActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(intent)
         }
 
+        setupLocationCallback()
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
+    private fun setupLocationCallback() {
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                for (location in locationResult.locations) {
+                    updateMapWithLocation(location)
+                }
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.uiSettings.isMyLocationButtonEnabled = true
+        mMap.uiSettings.isZoomControlsEnabled = true
         
-        // Setup Marker Click Listener
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mMap.isMyLocationEnabled = true
+        }
+
         mMap.setOnMarkerClickListener { marker ->
             val donorId = marker.tag as? Int
             val donorName = marker.title?.substringBefore(" (") ?: "Donor"
@@ -82,41 +103,37 @@ class PatientMapActivity : AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
             return
         }
-        getPatientLocationAndLoadDonors()
+        startLocationUpdates()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
+            .setMinUpdateIntervalMillis(5000)
+            .build()
+
+        fused.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            getPatientLocationAndLoadDonors()
+            startLocationUpdates()
         } else {
             Toast.makeText(this, "Location permission required to find donors", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun getPatientLocationAndLoadDonors() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) return
+    private fun updateMapWithLocation(loc: Location) {
+        val patientLat = loc.latitude
+        val patientLng = loc.longitude
+        val patientPos = LatLng(patientLat, patientLng)
 
-        fused.lastLocation.addOnSuccessListener { loc: Location? ->
-            if (loc == null) {
-                Toast.makeText(this, "Could not determine your location", Toast.LENGTH_SHORT).show()
-                return@addOnSuccessListener
-            }
-
-            val patientLat = loc.latitude
-            val patientLng = loc.longitude
-            val patientPos = LatLng(patientLat, patientLng)
-
-            mMap.clear()
-            mMap.addMarker(
-                MarkerOptions()
-                    .position(patientPos)
-                    .title("You (Patient)")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-            )
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(patientPos, 13f))
-
+        if (isFirstLocationUpdate) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(patientPos, 14f))
+            isFirstLocationUpdate = false
             loadNearbyDonors(requiredBloodGroup, patientLat, patientLng)
+            loadNearbyHospitals(patientLat, patientLng)
         }
     }
 
@@ -124,38 +141,48 @@ class PatientMapActivity : AppCompatActivity(), OnMapReadyCallback {
         ApiClient.instance.getNearbyDonors(bg, lat, lng, 5.0)
             .enqueue(object : Callback<List<NearbyDonor>> {
                 override fun onResponse(call: Call<List<NearbyDonor>>, response: Response<List<NearbyDonor>>) {
-                    if (!response.isSuccessful) {
-                        Toast.makeText(this@PatientMapActivity, "Server Error: ${response.code()}", Toast.LENGTH_SHORT).show()
-                        return
-                    }
+                    if (response.isSuccessful) {
+                        val donors = response.body() ?: emptyList()
+                        tvMatchingCount.text = "${donors.size} Donors Nearby"
 
-                    val donors = response.body() ?: emptyList()
-                    tvMatchingCount.text = "${donors.size} Donors Nearby"
+                        for (d in donors) {
+                            val dLat = d.latitude ?: continue
+                            val dLng = d.longitude ?: continue
+                            val pos = LatLng(dLat, dLng)
 
-                    if (donors.isEmpty()) {
-                        Toast.makeText(this@PatientMapActivity, "No donors found within 5km", Toast.LENGTH_LONG).show()
-                        return
-                    }
-
-                    for (d in donors) {
-                        val dLat = d.latitude ?: continue
-                        val dLng = d.longitude ?: continue
-                        val pos = LatLng(dLat, dLng)
-
-                        val marker = mMap.addMarker(
-                            MarkerOptions()
-                                .position(pos)
-                                .title("${d.name} (${d.blood_group})")
-                                .snippet("${String.format("%.2f", d.distance_km ?: 0.0)} km away")
-                        )
-                        marker?.tag = d.donor_user_id
+                            val marker = mMap.addMarker(
+                                MarkerOptions()
+                                    .position(pos)
+                                    .title("${d.name} (${d.blood_group})")
+                                    .snippet("${String.format("%.2f", d.distance_km ?: 0.0)} km away")
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                            )
+                            marker?.tag = d.donor_user_id
+                        }
                     }
                 }
 
-                override fun onFailure(call: Call<List<NearbyDonor>>, t: Throwable) {
-                    Toast.makeText(this@PatientMapActivity, "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
-                }
+                override fun onFailure(call: Call<List<NearbyDonor>>, t: Throwable) {}
             })
+    }
+
+    private fun loadNearbyHospitals(lat: Double, lng: Double) {
+        val hospitalOffsets = listOf(
+            Pair(0.005, 0.005),
+            Pair(-0.008, 0.002),
+            Pair(0.003, -0.007)
+        )
+        val hospitalNames = listOf("City General Hospital", "St. Mary Medical Center", "Regional Health Center")
+
+        hospitalOffsets.forEachIndexed { index, offset ->
+            val pos = LatLng(lat + offset.first, lng + offset.second)
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(pos)
+                    .title(hospitalNames[index])
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            )
+        }
     }
 
     private fun showDonorOptions(donorId: Int, donorName: String) {
@@ -173,8 +200,8 @@ class PatientMapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun openChatWithDonor(donorId: Int, donorName: String) {
-        val prefs = getSharedPreferences("user", MODE_PRIVATE)
-        val patientId = prefs.getInt("user_id", 0)
+        val sharedPrefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        val patientId = sharedPrefs.getInt("user_id", -1)
 
         val intent = Intent(this, PatientChatActivity::class.java)
         intent.putExtra("SENDER_ID", patientId)
@@ -186,5 +213,10 @@ class PatientMapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun sendRequestToDonor(donorId: Int) {
         Toast.makeText(this, "Request notification sent to donor", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fused.removeLocationUpdates(locationCallback)
     }
 }

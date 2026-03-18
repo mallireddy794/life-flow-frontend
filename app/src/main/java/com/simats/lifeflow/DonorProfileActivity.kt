@@ -5,13 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import java.util.*
 
-class DonorProfileActivity : AppCompatActivity() {
+class DonorProfileActivity : BaseActivity() {
 
     private val bloodGroups = arrayOf("A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-")
 
@@ -21,14 +19,9 @@ class DonorProfileActivity : AppCompatActivity() {
 
         val userId = intent.getIntExtra("user_id", -1)
 
-        val btnBack = findViewById<ImageView>(R.id.btn_back)
         val etBloodGroup = findViewById<EditText>(R.id.et_blood_group)
         val etDonationDate = findViewById<EditText>(R.id.et_donation_date)
         val btnSave = findViewById<Button>(R.id.btn_save)
-
-        btnBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
 
         // Configure blood group selection dialog
         etBloodGroup.isFocusable = false

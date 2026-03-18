@@ -6,12 +6,11 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private var isPasswordVisible = false
 
@@ -69,12 +68,20 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginUser(email: String, pass: String, role: String) {
+    private fun loginUser(email: String, pass: String, selectedRole: String) {
         val loginData = mapOf("email" to email, "password" to pass)
         ApiClient.instance.login(loginData).enqueue(object : Callback<LoginResponse> {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 if (response.isSuccessful) {
                     val user = response.body()?.user
+                    val actualRole = user?.role
+                    
+                    // Validate if the user's role matches the selected role
+                    if (actualRole != null && actualRole != selectedRole) {
+                        Toast.makeText(this@LoginActivity, "Invalid email: This account is registered as a $actualRole", Toast.LENGTH_LONG).show()
+                        return
+                    }
+                    
                     Toast.makeText(this@LoginActivity, "Login Successful: ${user?.name}", Toast.LENGTH_SHORT).show()
                     
                     // Save user id to SharedPreferences for global access
@@ -82,13 +89,12 @@ class LoginActivity : AppCompatActivity() {
                     sharedPrefs.edit().apply {
                         putInt("user_id", user?.id ?: -1)
                         putString("user_name", user?.name)
+                        putString("user_role", actualRole)
                     }.apply()
                     
-                    val userRole = user?.role ?: role
-                    
-                    val targetActivity = when (userRole) {
+                    val targetActivity = when (actualRole) {
                         "donor" -> DonorProfileActivity::class.java
-                        "patient" -> PatientDashboardActivity::class.java
+                        "patient" -> PatientProfileActivity::class.java
                         else -> DonorProfileActivity::class.java
                     }
                     

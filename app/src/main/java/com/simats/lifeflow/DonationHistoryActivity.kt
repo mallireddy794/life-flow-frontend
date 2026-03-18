@@ -8,12 +8,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DonationHistoryActivity : AppCompatActivity() {
+class DonationHistoryActivity : BaseActivity() {
 
     private lateinit var container: LinearLayout
 
@@ -23,7 +22,6 @@ class DonationHistoryActivity : AppCompatActivity() {
 
         var userId = intent.getIntExtra("user_id", -1)
         
-        // Robust userId retrieval
         if (userId == -1) {
             val sharedPrefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
             userId = sharedPrefs.getInt("user_id", -1)
@@ -44,20 +42,19 @@ class DonationHistoryActivity : AppCompatActivity() {
     }
 
     private fun fetchDonationHistory(userId: Int) {
-        // Fetch history using donor_id parameter to match backend
         ApiClient.instance.getDonationHistory(userId).enqueue(object : Callback<DonationHistoryResponse> {
             override fun onResponse(call: Call<DonationHistoryResponse>, response: Response<DonationHistoryResponse>) {
                 if (response.isSuccessful) {
                     val history = response.body()?.history ?: emptyList()
                     displayHistory(history)
                 } else {
-                    Toast.makeText(this@DonationHistoryActivity, "No history found or server error", Toast.LENGTH_SHORT).show()
                     displayHistory(emptyList())
                 }
             }
 
             override fun onFailure(call: Call<DonationHistoryResponse>, t: Throwable) {
-                Toast.makeText(this@DonationHistoryActivity, "Network Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@DonationHistoryActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
+                displayHistory(emptyList())
             }
         })
     }
@@ -66,18 +63,19 @@ class DonationHistoryActivity : AppCompatActivity() {
         container.removeAllViews()
         val inflater = LayoutInflater.from(this)
 
-        val displayList = if (history.isEmpty()) {
-            // Add some dummy data for demonstration if empty, matching the screenshot style
-            listOf(
-                Donation(donation_date = "March 15, 2024", units = 1, blood_group = "O+", location = "City General Hospital", notes = ""),
-                Donation(donation_date = "December 10, 2023", units = 1, blood_group = "A-", location = "Regional Health Center", notes = ""),
-                Donation(donation_date = "September 5, 2023", units = 2, blood_group = "B+", location = "St. Mary Medical Center", notes = "")
-            )
-        } else {
-            history
+        if (history.isEmpty()) {
+            val emptyView = inflater.inflate(R.layout.item_donation_history, container, false)
+            emptyView.findViewById<TextView>(R.id.tv_date).text = "No history found"
+            emptyView.findViewById<TextView>(R.id.tv_location).text = "Your donation records will appear here"
+            emptyView.findViewById<TextView>(R.id.tv_units).text = ""
+            emptyView.findViewById<TextView>(R.id.tv_status).visibility = View.GONE
+            emptyView.findViewById<ImageView>(R.id.iv_icon).setImageResource(R.drawable.ic_clock)
+            container.addView(emptyView)
+            return
         }
 
-        for (donation in displayList) {
+        // Real history display logic
+        for (donation in history) {
             val itemView = inflater.inflate(R.layout.item_donation_history, container, false)
             
             val tvDate = itemView.findViewById<TextView>(R.id.tv_date)
@@ -88,10 +86,18 @@ class DonationHistoryActivity : AppCompatActivity() {
             tvDate.text = donation.donation_date
             tvLocation.text = donation.location ?: "Medical Center"
             
-            val unitStr = if (donation.units == 1) "unit" else "units"
+            val unitStr = if (donation.units <= 1) "unit" else "units"
             tvUnits.text = "${donation.units} $unitStr"
             
-            tvStatus.text = "Completed"
+            if (donation.notes?.contains("Scheduled", ignoreCase = true) == true) {
+                tvStatus.text = "Scheduled"
+                tvStatus.setBackgroundResource(R.drawable.bg_status_pending)
+                tvStatus.setTextColor(getColor(R.color.text_gray))
+            } else {
+                tvStatus.text = "Completed"
+                tvStatus.setBackgroundResource(R.drawable.bg_status_completed)
+                tvStatus.setTextColor(getColor(R.color.success_emerald))
+            }
 
             container.addView(itemView)
         }

@@ -3,28 +3,21 @@ package com.simats.lifeflow
 import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 
-class PatientProfileActivity : AppCompatActivity() {
+class PatientProfileActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_patient_profile)
 
-        val ivBack = findViewById<ImageView>(R.id.iv_back)
         val etFullName = findViewById<EditText>(R.id.et_full_name)
         val etPhone = findViewById<EditText>(R.id.et_phone)
         val etBloodType = findViewById<EditText>(R.id.et_blood_type)
         val etUnitsNeeded = findViewById<EditText>(R.id.et_units_needed)
         val etLocation = findViewById<EditText>(R.id.et_location)
         val btnContinue = findViewById<AppCompatButton>(R.id.btn_continue)
-
-        ivBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
 
         btnContinue.setOnClickListener {
             val name = etFullName.text.toString()

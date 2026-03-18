@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,257 +9,251 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="24dp"
+            android:paddingHorizontal="20dp"
             android:paddingTop="20dp"
             android:paddingBottom="40dp">
 
-            <!-- Premium Header -->
-            <RelativeLayout
-                android:id="@+id/dashboard_header"
-                android:layout_width="match_parent"
+            <!-- Header without back button -->
+            <LinearLayout
+                android:id="@+id/welcome_container"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp">
+                android:orientation="vertical"
+                app:layout_constraintEnd_toStartOf="@id/action_icons_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:id="@+id/welcome_container"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:text="Welcome Back,"
+                    android:textColor="@color/text_gray"
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Donor Dashboard"
+                    android:textColor="@color/text_dark"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Action Icons -->
+            <LinearLayout
+                android:id="@+id/action_icons_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@id/welcome_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/welcome_container">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/btn_notification_card"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp">
                     <ImageView
-                        android:id="@+id/btn_back"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_back"
+                        android:id="@+id/btn_notification"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_bell"
                         app:tint="@color/text_dark" />
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Welcome Back,"
-                            android:textColor="@color/text_gray"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tv_user_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Donor Dashboard"
-                            android:textColor="@color/text_dark"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/btn_notification_card"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        android:layout_marginEnd="12dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
-                        <ImageView
-                            android:id="@+id/btn_notification"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_bell"
-                            app:tint="@color/text_dark" />
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/btn_settings_card"
-                        android:layout_width="44dp"
-                        android:layout_height="44dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="12dp"
-                        app:cardElevation="2dp">
-                        <ImageView
-                            android:id="@+id/btn_settings"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_settings"
-                            app:tint="@color/text_dark" />
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </RelativeLayout>
-
-            <!-- Status Card with SwitchCompat -->
+            <!-- Status Card -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_availability"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
+                android:layout_marginTop="32dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="2dp">
+                app:cardElevation="2dp"
+                app:layout_constraintTop_toBottomOf="@id/welcome_container">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="18dp">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="Available to Donate Now"
-                            android:textColor="@color/text_dark"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switch_availability"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            app:thumbTint="@color/white"
-                            app:trackTint="@color/success_green" />
-                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_availability_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp"
+                        android:text="Availability Status"
+                        android:textColor="@color/text_dark"
+                        android:textSize="18sp"
+                        android:fontFamily="sans-serif-medium"
+                        app:layout_constraintEnd_toStartOf="@id/switch_availability"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_availability_status"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="2dp"
                         android:text="Available to Donate Now"
                         android:textColor="@color/success_green"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toStartOf="@id/switch_availability"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_availability_label" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/switch_availability"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:thumbTint="@color/white"
+                        app:trackTint="@color/success_green" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-
             <!-- Nearby Requests Section -->
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/nearby_requests_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginTop="32dp"
                 android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/card_availability"
                 tools:visibility="visible">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tv_nearby_requests_title"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginEnd="16dp"
+                    android:text="Nearby Blood Requests"
+                    android:textColor="@color/text_dark"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_view_map_donor"
+                    app:layout_constraintEnd_toStartOf="@id/btn_view_map_donor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/btn_view_map_donor" />
+
+                <LinearLayout
+                    android:id="@+id/btn_view_map_donor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="4dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_location"
+                        app:tint="@color/bright_red" />
 
                     <TextView
-                        android:id="@+id/tv_nearby_requests_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="Nearby Blood Requests"
-                        android:textColor="@color/text_dark"
-                        android:textSize="18sp"
+                        android:layout_marginStart="4dp"
+                        android:text="View Map"
+                        android:textColor="@color/bright_red"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:id="@+id/btn_view_map"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_location"
-                            app:tint="@color/bright_red" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:text="View Map"
-                            android:textColor="@color/bright_red"
-                            android:textSize="14sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-                </RelativeLayout>
+                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_nearby_requests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:nestedScrollingEnabled="false"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:layout_marginBottom="32dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv_nearby_requests_title"
                     tools:listitem="@layout/item_nearby_request" />
-            </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Quick Actions -->
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tv_quick_actions_label"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="32dp"
+                android:text="Quick Actions"
+                android:textColor="@color/text_dark"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nearby_requests_section" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_button_outline"
-                    android:text="Donation History"
-                    android:textAllCaps="false"
-                    android:textColor="@color/bright_red"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_history"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_button_outline"
+                android:text="Donation History"
+                android:textAllCaps="false"
+                android:textColor="@color/bright_red"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium"
+                app:layout_constraintTop_toBottomOf="@id/tv_quick_actions_label" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_chat_patient"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/bg_button_solid"
-                    android:text="Chat with Patient"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_chat_patient"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_button_solid"
+                android:text="Chat with Patient"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium"
+                app:layout_constraintTop_toBottomOf="@id/btn_history" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_view_requirements"
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:background="@drawable/bg_button_outline"
-                    android:text="Check Donor Requirements"
-                    android:textAllCaps="false"
-                    android:textColor="@color/bright_red"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_view_requirements"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_button_outline"
+                android:text="Check Donor Requirements"
+                android:textAllCaps="false"
+                android:textColor="@color/bright_red"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium"
+                app:layout_constraintTop_toBottomOf="@id/btn_chat_patient" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/donor_bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

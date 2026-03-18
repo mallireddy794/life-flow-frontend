@@ -7,10 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 
-class RequestTrackingActivity : AppCompatActivity() {
+class RequestTrackingActivity : BaseActivity() {
 
     private val handler = Handler(Looper.getMainLooper())
     private var distance = 2.5

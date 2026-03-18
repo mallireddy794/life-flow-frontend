@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
@@ -8,117 +9,120 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="2dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:padding="20dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_blood_group"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_icon_circle_red"
+            android:gravity="center"
+            android:text="O+"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_blood_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:background="@drawable/bg_icon_circle_red"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="O+"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_hospital_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="City Hospital"
+            android:textColor="@color/text_slate"
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@id/tv_urgency"
+            app:layout_constraintStart_toEndOf="@id/tv_blood_group"
+            app:layout_constraintTop_toTopOf="@id/tv_blood_group" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="16dp"
-                android:layout_toEndOf="@id/tv_blood_group"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_units"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="2 Units Required"
+            android:textColor="@color/text_cool_gray"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/tv_hospital_name"
+            app:layout_constraintStart_toStartOf="@id/tv_hospital_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_hospital_name" />
 
-                <TextView
-                    android:id="@+id/tv_hospital_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="City Hospital"
-                    android:textColor="@color/text_slate"
-                    android:textSize="17sp"
-                    android:fontFamily="sans-serif-medium" />
-
-                <TextView
-                    android:id="@+id/tv_units"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2 Units Required"
-                    android:textColor="@color/text_cool_gray"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/tv_urgency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_urgent_badge"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="5dp"
-                android:text="Urgent"
-                android:textColor="#E53E3E"
-                android:textSize="12sp"
-                android:fontFamily="sans-serif-medium" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_urgency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_urgent_badge"
+            android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="5dp"
+            android:text="Urgent"
+            android:textColor="#E53E3E"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_blood_group"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_blood_group" />
 
         <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="16dp"
-            android:background="#EDF2F7" />
+            android:layout_marginTop="16dp"
+            android:background="#EDF2F7"
+            app:layout_constraintTop_toBottomOf="@id/tv_blood_group" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_location_icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_location"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:tint="#A0AEC0" />
+
+        <TextView
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_marginStart="8dp"
+            android:text="2.5 km away"
+            android:textColor="@color/text_cool_gray"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_location_icon"
+            app:layout_constraintStart_toEndOf="@id/iv_location_icon"
+            app:layout_constraintTop_toTopOf="@id/iv_location_icon" />
 
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_location"
-                app:tint="#A0AEC0" />
+        <TextView
+            android:id="@+id/tv_donate_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Donate Now"
+            android:textColor="@color/blood_red"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_location"
+            app:layout_constraintEnd_toStartOf="@id/iv_chevron"
+            app:layout_constraintTop_toTopOf="@id/tv_location" />
 
-            <TextView
-                android:id="@+id/tv_location"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:text="2.5 km away"
-                android:textColor="@color/text_cool_gray"
-                android:textSize="14sp" />
+        <ImageView
+            android:id="@+id/iv_chevron"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            android:src="@drawable/ic_chevron_right"
+            app:layout_constraintBottom_toBottomOf="@id/tv_donate_now"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_donate_now"
+            app:tint="@color/bright_red" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Donate Now"
-                android:textColor="@color/blood_red"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif-medium" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_marginStart="4dp"
-                android:src="@drawable/ic_chevron_right"
-                app:tint="@color/bright_red" />
-        </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
+

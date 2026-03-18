@@ -9,7 +9,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +18,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PatientChatActivity : AppCompatActivity() {
+class PatientChatActivity : BaseActivity() {
 
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var rvMessages: RecyclerView

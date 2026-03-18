@@ -22,9 +22,21 @@ class InboxAdapter(private val onChatClick: (InboxItem) -> Unit) : RecyclerView.
 
     override fun onBindViewHolder(holder: InboxViewHolder, position: Int) {
         val item = items[position]
-        holder.tvName.text = item.other_user.name
+        holder.tvName.text = item.other_user?.name ?: "Unknown User"
         holder.tvLastMessage.text = item.last_message
-        holder.tvTime.text = item.last_time.substringAfter("T").substringBefore(".")
+        
+        // Safely format time
+        try {
+            holder.tvTime.text = if (item.last_time.contains("T")) {
+                item.last_time.substringAfter("T").substringBefore(".")
+            } else if (item.last_time.contains(" ")) {
+                item.last_time.substringAfter(" ").substringBeforeLast(":")
+            } else {
+                item.last_time
+            }
+        } catch (e: Exception) {
+            holder.tvTime.text = item.last_time
+        }
         
         if (item.unread_count > 0) {
             holder.tvUnread.visibility = View.VISIBLE

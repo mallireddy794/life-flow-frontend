@@ -7,13 +7,13 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PatientDashboardActivity : AppCompatActivity() {
+class PatientDashboardActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,9 +22,7 @@ class PatientDashboardActivity : AppCompatActivity() {
         val sharedPrefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val userId = sharedPrefs.getInt("user_id", -1)
 
-        val ivBack = findViewById<ImageView>(R.id.iv_back)
         val ivNotifications = findViewById<ImageView>(R.id.iv_notifications)
-        val ivSettings = findViewById<ImageView>(R.id.iv_settings)
         val btnViewMap = findViewById<AppCompatButton>(R.id.btn_view_map)
         val btnTrackRequest = findViewById<AppCompatButton>(R.id.btn_track_request)
         val btnViewMatches = findViewById<AppCompatButton>(R.id.btn_view_matches)
@@ -32,10 +30,7 @@ class PatientDashboardActivity : AppCompatActivity() {
         val btnChat = findViewById<AppCompatButton>(R.id.btn_chat)
         val btnNearbyDonors = findViewById<LinearLayout>(R.id.btn_nearby_donors)
         val btnNearbyHospitals = findViewById<LinearLayout>(R.id.btn_nearby_hospitals)
-
-        ivBack.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
-        }
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         btnNearbyDonors.setOnClickListener {
             val intent = Intent(this, NearbyDonorsActivity::class.java)
@@ -49,11 +44,6 @@ class PatientDashboardActivity : AppCompatActivity() {
 
         ivNotifications.setOnClickListener {
             val intent = Intent(this, PatientNotificationsActivity::class.java)
-            startActivity(intent)
-        }
-
-        ivSettings.setOnClickListener {
-            val intent = Intent(this, PatientSettingsActivity::class.java)
             startActivity(intent)
         }
 
@@ -85,6 +75,27 @@ class PatientDashboardActivity : AppCompatActivity() {
             }
         }
 
+        bottomNav.selectedItemId = R.id.nav_home
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    // Already on home
+                    true
+                }
+                R.id.nav_chat -> {
+                    val intent = Intent(this, ChatInboxActivity::class.java)
+                    startActivity(intent)
+                    false
+                }
+                R.id.nav_settings -> {
+                    val intent = Intent(this, PatientSettingsActivity::class.java)
+                    startActivity(intent)
+                    false
+                }
+                else -> false
+            }
+        }
+
         fetchDashboardStats()
     }
 
@@ -93,18 +104,21 @@ class PatientDashboardActivity : AppCompatActivity() {
             override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
                 if (response.isSuccessful) {
                     val donors = response.body() ?: emptyList()
-                    findViewById<TextView>(R.id.tv_match_count).text = donors.size.toString()
-                    findViewById<TextView>(R.id.tv_nearby_donors_count).text = donors.size.toString()
                     
-                    // Update location name or other status if needed
+                    // Update the main match count in the highlight card
+                    findViewById<TextView>(R.id.tv_match_count)?.text = donors.size.toString()
+                    
+                    // Update counts in the bottom stats row
+                    findViewById<TextView>(R.id.tv_nearby_donors_count)?.text = donors.size.toString()
+                    
                     if (donors.isNotEmpty()) {
-                        findViewById<TextView>(R.id.tv_matched_status).text = "Donors Matched"
-                        findViewById<TextView>(R.id.tv_searching).text = "Found ${donors.size} donors near you"
+                        findViewById<TextView>(R.id.tv_matched_status)?.text = "Donors Matched"
+                        findViewById<TextView>(R.id.tv_searching)?.text = "Found ${donors.size} donors near you"
                     }
                 }
             }
             override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                // Silently fail or log
+                // Silently fail
             }
         })
     }

@@ -3,6 +3,8 @@ package com.simats.lifeflow
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.widget.*
@@ -27,6 +29,21 @@ class LoginActivity : BaseActivity() {
         val btnLogin = findViewById<Button>(R.id.btn_login)
         val tvForgotPassword = findViewById<TextView>(R.id.tv_forgot_password)
         val tvCreateAccount = findViewById<TextView>(R.id.tv_create_account)
+        
+        etEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                val email = s.toString().trim()
+                if (email.isNotEmpty()) {
+                    if (!isValidEmail(email)) {
+                        etEmail.error = "Invalid email"
+                    } else {
+                        etEmail.error = null
+                    }
+                }
+            }
+        })
 
         ivBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -48,11 +65,22 @@ class LoginActivity : BaseActivity() {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                loginUser(email, password, role)
-            } else {
+            if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please enter all details", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            if (!isValidEmail(email)) {
+                etEmail.error = "Enter valid email"
+                etEmail.requestFocus()
+                return@setOnClickListener
+            } else {
+                etEmail.error = null
+                // Optional: show small confirmation toast for email validity as requested
+                Toast.makeText(this, "Valid Email ✅", Toast.LENGTH_SHORT).show()
+            }
+
+            loginUser(email, password, role)
         }
 
         tvForgotPassword.setOnClickListener {
@@ -93,8 +121,8 @@ class LoginActivity : BaseActivity() {
                     }.apply()
                     
                     val targetActivity = when (actualRole) {
-                        "donor" -> DonorProfileActivity::class.java
-                        "patient" -> PatientProfileActivity::class.java
+                        "donor" -> if (user.isProfileComplete) DonorDashboardActivity::class.java else DonorProfileActivity::class.java
+                        "patient" -> if (user.isProfileComplete) PatientDashboardActivity::class.java else PatientProfileActivity::class.java
                         else -> DonorProfileActivity::class.java
                     }
                     

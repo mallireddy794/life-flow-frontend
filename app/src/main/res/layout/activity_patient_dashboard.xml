@@ -301,12 +301,54 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Nearby Donors Section -->
+            <TextView
+                android:id="@+id/tv_dashboard_donors_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Nearby Donors"
+                android:textColor="@color/text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/row_stats" />
+
+            <LinearLayout
+                android:id="@+id/ll_dashboard_donors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/tv_dashboard_donors_title" />
+
+            <!-- Nearby Hospitals Section -->
+            <TextView
+                android:id="@+id/tv_dashboard_hospitals_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Nearby Hospitals"
+                android:textColor="@color/text_dark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ll_dashboard_donors" />
+
+            <LinearLayout
+                android:id="@+id/ll_dashboard_hospitals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/tv_dashboard_hospitals_title" />
+
             <!-- Bottom Buttons -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_emergency"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/bg_button_solid"
                 android:drawableStart="@drawable/ic_exclamation_circle"
                 android:drawablePadding="12dp"
@@ -317,7 +359,7 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:gravity="start|center_vertical"
-                app:layout_constraintTop_toBottomOf="@id/row_stats" />
+                app:layout_constraintTop_toBottomOf="@id/ll_dashboard_hospitals" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_chat"

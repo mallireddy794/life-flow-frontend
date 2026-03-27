@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -51,6 +52,9 @@ class PatientChatActivity : BaseActivity() {
 
         receiverId = intent.getIntExtra("RECEIVER_ID", -1)
         val receiverName = intent.getStringExtra("RECEIVER_NAME") ?: "User"
+        val bloodGroup = intent.getStringExtra("BLOOD_GROUP") ?: "O+"
+        val isEmergency = intent.getBooleanExtra("IS_EMERGENCY", false)
+        val unitsNeeded = intent.getIntExtra("UNITS", 1)
         
         Log.d("ChatActivity", "Me: $senderId, Target: $receiverId")
 
@@ -63,9 +67,17 @@ class PatientChatActivity : BaseActivity() {
         findViewById<ImageView>(R.id.btn_back).setOnClickListener { finish() }
         findViewById<TextView>(R.id.tv_chat_title).text = receiverName
         findViewById<TextView>(R.id.tv_chat_status).text = "Online"
+        
+        val tvBloodBadge = findViewById<TextView>(R.id.tv_blood_badge)
+        tvBloodBadge.text = bloodGroup
+        tvBloodBadge.visibility = View.VISIBLE
 
         etInput = findViewById(R.id.et_message_input)
         rvMessages = findViewById(R.id.rv_messages)
+
+        if (isEmergency) {
+            etInput.setText("Hello $receiverName, I have an emergency blood request for $bloodGroup (${unitsNeeded} units). Are you available to help right now?")
+        }
 
         // Ensure currentUserId is correct
         chatAdapter = ChatAdapter(senderId)

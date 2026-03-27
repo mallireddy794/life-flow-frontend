@@ -20,7 +20,9 @@ class Onboarding2Activity : BaseActivity() {
         }
 
         btnSkip.setOnClickListener {
-            Toast.makeText(this, "Skipping Onboarding", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, RoleSelectionActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }

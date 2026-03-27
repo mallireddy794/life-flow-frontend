@@ -20,8 +20,9 @@ class Onboarding1Activity : BaseActivity() {
         }
 
         btnSkip.setOnClickListener {
-            // Navigate to Main or Login
-            Toast.makeText(this, "Skipping Onboarding", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, RoleSelectionActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }

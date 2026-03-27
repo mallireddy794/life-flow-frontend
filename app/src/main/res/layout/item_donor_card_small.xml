@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_donor_card_white"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_donor_bg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_icon_circle_red"
+        android:gravity="center"
+        android:text="A+"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_donor_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="Donor Name"
+        android:textColor="@color/text_dark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tv_donor_badge"
+        app:layout_constraintStart_toEndOf="@id/tv_donor_bg"
+        app:layout_constraintTop_toTopOf="@id/tv_donor_bg" />
+
+    <TextView
+        android:id="@+id/tv_donor_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_availability_high"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:text="Available"
+        android:textColor="#166534"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_donor_loc"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/ic_location"
+        app:layout_constraintStart_toEndOf="@id/tv_donor_bg"
+        app:layout_constraintStart_toStartOf="@id/tv_donor_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_donor_name" />
+
+    <TextView
+        android:id="@+id/tv_donor_dist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="1.2 km away"
+        android:textColor="@color/text_gray"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_donor_loc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_donor_loc"
+        app:layout_constraintTop_toTopOf="@id/iv_donor_loc" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

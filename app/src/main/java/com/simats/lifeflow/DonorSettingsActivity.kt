@@ -25,6 +25,7 @@ class DonorSettingsActivity : BaseActivity() {
         val itemLanguage = findViewById<LinearLayout>(R.id.item_language)
         val itemAccessibility = findViewById<LinearLayout>(R.id.item_accessibility)
         val itemHelp = findViewById<LinearLayout>(R.id.item_help)
+        val itemFreeMap = findViewById<LinearLayout>(R.id.item_free_map)
 
         btnBack.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -64,6 +65,10 @@ class DonorSettingsActivity : BaseActivity() {
 
         itemHelp.setOnClickListener {
             startActivity(Intent(this, HelpAndSupportActivity::class.java))
+        }
+
+        itemFreeMap.setOnClickListener {
+            startActivity(Intent(this, FreeMapActivity::class.java))
         }
 
         btnLogout.setOnClickListener {

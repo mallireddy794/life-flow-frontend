@@ -70,6 +70,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp" />
 
+            <!-- Free Map (OSM) -->
+            <include
+                android:id="@+id/item_free_map"
+                layout="@layout/view_setting_item"
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
+
             <!-- Notification Preferences -->
             <include
                 android:id="@+id/item_notifications"

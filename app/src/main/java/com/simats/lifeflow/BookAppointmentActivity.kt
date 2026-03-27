@@ -69,6 +69,7 @@ class BookAppointmentActivity : BaseActivity() {
             intent.putExtra("TIME", selectedTimeSlot?.text.toString())
             intent.putExtra("FROM_ACCEPT", fromAccept)
             intent.putExtra("RECEIVER_ID", receiverId)
+            intent.putExtra("REQUEST_ID", this.intent.getIntExtra("REQUEST_ID", -1))
             intent.putExtra("RECEIVER_NAME", receiverName)
             intent.putExtra("BLOOD_GROUP", this.intent.getStringExtra("BLOOD_GROUP"))
             intent.putExtra("UNITS", this.intent.getIntExtra("UNITS", 1))

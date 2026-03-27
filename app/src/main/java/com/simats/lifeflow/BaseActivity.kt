@@ -2,6 +2,7 @@ package com.simats.lifeflow
 
 import android.content.Context
 import android.content.res.Configuration
+import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 
 open class BaseActivity : AppCompatActivity() {
@@ -24,5 +25,14 @@ open class BaseActivity : AppCompatActivity() {
         val context = newBase.createConfigurationContext(config)
         
         super.attachBaseContext(context)
+    }
+    
+    fun isValidEmail(email: String): Boolean {
+        val emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        return email.isNotEmpty() && java.util.regex.Pattern.compile(emailPattern).matcher(email).matches()
+    }
+
+    fun isValidPhone(phone: String): Boolean {
+        return phone.length == 10 && phone.all { it.isDigit() }
     }
 }

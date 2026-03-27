@@ -13,22 +13,39 @@
         android:layout_height="wrap_content"
         android:background="#FFEBEB"
         android:gravity="center"
-        android:paddingVertical="8dp"
+        android:orientation="vertical"
+        android:paddingVertical="12dp"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent">
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:src="@drawable/ic_bolt"
-            app:tint="@color/bright_red" />
-        <TextView
+        
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Emergency Request Active"
-            android:textColor="@color/bright_red"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_bolt"
+                app:tint="@color/bright_red" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="EMERGENCY REQUEST ACTIVE"
+                android:textColor="@color/bright_red"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_emergency_blood_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Blood Type: O+"
+            android:textColor="@color/text_dark"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <!-- Header -->
@@ -62,12 +79,21 @@
             app:layout_constraintStart_toEndOf="@id/iv_back"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/pb_searching"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Real Google Map -->
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <!-- OSM Real-time Map (Free) -->
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/bottom_panel"
@@ -78,16 +104,17 @@
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="24dp"
+        android:background="@drawable/bg_bottom_sheet"
+        android:elevation="12dp"
+        android:padding="20dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <TextView
-            android:id="@+id/tv_showing_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Showing"
-            android:textColor="@color/text_gray"
-            android:textSize="14sp"
+        <View
+            android:id="@+id/handle"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="#E2E8F0"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -95,48 +122,64 @@
             android:id="@+id/tv_matching_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="12dp"
             android:text="0 Donors Nearby"
             android:textColor="@color/text_dark"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_showing_label" />
-
-        <TextView
-            android:id="@+id/tv_radius_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Within"
-            android:textColor="@color/text_gray"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/handle" />
 
         <TextView
             android:id="@+id/tv_radius_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="5 km radius"
-            android:textColor="@color/text_dark"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:text="10 km radius"
+            android:textColor="@color/text_gray"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_matching_count"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_radius_label" />
+            app:layout_constraintTop_toTopOf="@id/tv_matching_count" />
+
+        <!-- Donor List in Bottom Panel -->
+        <LinearLayout
+            android:id="@+id/ll_donor_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_matching_count">
+
+            <TextView
+                android:id="@+id/tv_no_donors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="No matching donors found in your area yet.\nTry expanding your range."
+                android:textColor="@color/text_gray"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_nearby_donors"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:clipToPadding="false"
+                android:paddingBottom="8dp" />
+
+        </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_view_all"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_button_solid"
-            android:text="View All Matches"
+            android:layout_height="52dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_button_white_border"
+            android:text="View All AI Matches"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/tv_matching_count" />
+            android:textColor="@color/text_dark"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@id/ll_donor_list" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

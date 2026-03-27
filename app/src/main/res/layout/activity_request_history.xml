@@ -54,25 +54,11 @@
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
+            android:id="@+id/history_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp">
-
-            <!-- Item 1: Completed -->
-            <include
-                android:id="@+id/item_1"
-                layout="@layout/view_request_history_item" />
-
-            <!-- Item 2: In Progress -->
-            <include
-                android:id="@+id/item_2"
-                layout="@layout/view_request_history_item" />
-
-            <!-- Item 3: Completed -->
-            <include
-                android:id="@+id/item_3"
-                layout="@layout/view_request_history_item" />
 
         </LinearLayout>
     </ScrollView>

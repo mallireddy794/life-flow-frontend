@@ -1,5 +1,6 @@
 package com.simats.lifeflow
 
+import android.content.Intent
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -97,6 +98,20 @@ class DonationHistoryActivity : BaseActivity() {
                 tvStatus.text = "Completed"
                 tvStatus.setBackgroundResource(R.drawable.bg_status_completed)
                 tvStatus.setTextColor(getColor(R.color.success_emerald))
+            }
+
+            itemView.setOnClickListener {
+                val intent = Intent(this, AppointmentConfirmationActivity::class.java)
+                val dateTime = donation.donation_date.split(" ")
+                intent.putExtra("DATE", if (dateTime.isNotEmpty()) dateTime[0] else donation.donation_date)
+                intent.putExtra("TIME", if (dateTime.size > 1) dateTime[1].substringBeforeLast(":") else "10:00 AM")
+                intent.putExtra("RECEIVER_ID", -1)
+                intent.putExtra("RECEIVER_NAME", donation.location ?: "Medical Center")
+                intent.putExtra("BLOOD_GROUP", donation.blood_group)
+                intent.putExtra("UNITS", donation.units)
+                intent.putExtra("FROM_ACCEPT", false)
+                intent.putExtra("IS_VIEW_ONLY", true) // Prevent re-saving to database
+                startActivity(intent)
             }
 
             container.addView(itemView)

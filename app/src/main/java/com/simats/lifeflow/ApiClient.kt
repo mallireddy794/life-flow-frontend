@@ -6,10 +6,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-object  ApiClient {
+object ApiClient {
     // IMPORTANT: Base URL must always end with a /
+    // Use 10.0.2.2 for Android Emulator to connect to your local Flask server on localhost:5000
     private const val BASE_URL = "https://n8rbgxp8-5000.inc1.devtunnels.ms/"
-
+    
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
@@ -22,9 +23,10 @@ object  ApiClient {
                 .build()
             chain.proceed(request)
         }
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .retryOnConnectionFailure(true)
         .build()
 
     val instance: ApiService by lazy {

@@ -55,8 +55,8 @@ class ResetPasswordActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            if (newPassword.length < 6) {
-                Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+            if (!isValidPassword(newPassword)) {
+                Toast.makeText(this, "Password must be at least 8 characters, with 1 uppercase, 1 special character, and 1 number", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -76,6 +76,12 @@ class ResetPasswordActivity : BaseActivity() {
 
     private fun isPasswordVisible(editText: EditText): Boolean {
         return editText.inputType == (InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD)
+    }
+
+    private fun isValidPassword(password: String): Boolean {
+        val passwordPattern = "^(?=.*[0-9])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$"
+        val pattern = java.util.regex.Pattern.compile(passwordPattern)
+        return pattern.matcher(password).matches()
     }
 
     private fun updatePasswordInBackend(email: String, otp: String, newPass: String) {

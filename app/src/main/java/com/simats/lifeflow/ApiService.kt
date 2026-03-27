@@ -3,6 +3,7 @@ package com.simats.lifeflow
 import retrofit2.Call
 import retrofit2.http.*
 
+@JvmSuppressWildcards
 interface ApiService {
     @POST("signup")
     fun signup(@Body data: Map<String, String>): Call<Map<String, String>>
@@ -81,5 +82,31 @@ interface ApiService {
     ): Call<List<NearbyDonor>>
 
     @POST("patient/send_request")
-    fun sendRequestToDonor(@Body data: Map<String, Any>): Call<Map<String, String>>
+    fun sendRequestToDonor(@Body data: SendRequestToDonor): Call<Map<String, String>>
+
+    @POST("update_location")
+    fun updateLocation(@Body data: LocationUpdate): Call<Map<String, String>>
+
+    @GET("donor/requests")
+    fun getDonorRequests(
+        @Query("donor_id") donorId: Int
+    ): Call<List<NearbyRequest>>
+
+    @PUT("donor/request/update")
+    fun updateRequestStatus(@Body data: RequestStatusUpdate): Call<Map<String, String>>
+
+    @GET("user/location/{user_id}")
+    fun getUserLocation(@Path("user_id") userId: Int): Call<Map<String, Any>>
+
+    @GET("patients/nearby")
+    fun getNearbyPatients(
+        @Query("lat") lat: Double,
+        @Query("lng") lng: Double,
+        @Query("radius_km") radiusKm: Double,
+        @Query("blood_group") bloodGroup: String? = null
+    ): Call<List<NearbyPatient>>
+    @GET("donor/requests/nearby")
+    fun getNearbyRequests(
+        @Query("donor_id") donorId: Int
+    ): Call<NearbyRequestsResponse>
 }

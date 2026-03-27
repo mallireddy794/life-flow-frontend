@@ -9,7 +9,8 @@ data class User(
     val phone: String? = null,
     val blood_group: String? = null,
     val role: String? = null,
-    val available_to_donate: Boolean = false
+    val available_to_donate: Boolean = false,
+    @SerializedName("is_profile_complete") val isProfileComplete: Boolean = false
 )
 
 data class LoginResponse(
@@ -21,7 +22,8 @@ data class DonorProfile(
     val phone: String = "",
     val blood_group: String = "",
     val age: Int = 0,
-    val city: String = ""
+    val city: String = "",
+    val last_donation_date: String = ""
 )
 
 data class PatientProfile(
@@ -32,10 +34,13 @@ data class PatientProfile(
 )
 
 data class BloodRequest(
-    val blood_group: String = "",
-    val units_required: Int = 0,
-    val urgency_level: String = "",
-    val city: String = ""
+    @SerializedName("patient_name") val patient_name: String? = null,
+    @SerializedName("hospital_name") val hospital_name: String? = null,
+    @SerializedName("contact_number") val contact_number: String? = null,
+    @SerializedName("blood_group") val blood_group: String = "",
+    @SerializedName("units_required") val units_required: Int = 0,
+    @SerializedName("urgency_level") val urgency_level: String = "",
+    @SerializedName("city") val city: String = ""
 )
 
 data class PatientRequest(
@@ -82,10 +87,64 @@ data class InboxItem(
 )
 
 data class NearbyRequest(
-    val bloodGroup: String = "",
-    val units: Int = 0,
-    val hospitalName: String = "",
-    val location: String = "",
-    val urgency: String = "",
-    val patientId: Int = 0
+    val id: Int = 0,
+    @SerializedName("patient_id") val patientId: Int = 0,
+    @SerializedName("donor_id") val donorId: Int = 0,
+    @SerializedName("blood_group") val bloodGroup: String = "",
+    @SerializedName("units_needed") val units: Int = 0,
+    @SerializedName("urgency") val urgency: String = "",
+    val message: String? = null,
+    val status: String = "",
+    @SerializedName("created_at") val createdAt: String? = null,
+    
+    // UI mapping helpers (Backwards compatibility with existing Adapter)
+    @SerializedName("hospital_name") val hospitalName: String = "LifeFlow Center",
+    @SerializedName("city") val location: String = "Nearby"
+)
+
+data class NearbyDonor(
+    @SerializedName("donor_user_id") val donorUserId: Int? = null,
+    val name: String? = null,
+    val phone: String? = null,
+    @SerializedName("blood_group") val bloodGroup: String? = null,
+    val city: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    @SerializedName("distance_km") val distanceKm: Double? = null
+)
+
+data class NearbyPatient(
+    val id: Int? = null,
+    @SerializedName("user_id") val userId: Int? = null,
+    val name: String? = null,
+    @SerializedName("blood_group") val blood_group: String? = null,
+    @SerializedName("hospital_name") val hospital_name: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null
+)
+
+data class LocationUpdate(
+    @SerializedName("user_id") val userId: Int,
+    val latitude: Double,
+    val longitude: Double
+)
+
+data class RequestStatusUpdate(
+    @SerializedName("request_id") val requestId: Int,
+    val status: String
+)
+
+data class SendRequestToDonor(
+    @SerializedName("patient_id") val patientId: Int,
+    @SerializedName("donor_id") val donorId: Int,
+    @SerializedName("blood_group") val bloodGroup: String,
+    @SerializedName("units_needed") val unitsNeeded: Int,
+    @SerializedName("urgency") val urgency: String,
+    @SerializedName("message") val message: String
+)
+
+data class NearbyRequestsResponse(
+    val message: String,
+    val count: Int,
+    val requests: List<NearbyRequest>
 )

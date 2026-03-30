@@ -29,7 +29,12 @@ class NearbyDonorListAdapter(
         holder.tvName.text = donor.name ?: "Unknown Donor"
         
         val distStr = if (donor.distanceKm != null) String.format("%.1f km", donor.distanceKm) else ""
-        holder.tvInfo.text = "Blood Group: ${donor.bloodGroup ?: "?"} · $distStr"
+        
+        val aiStats = if (donor.pastAcceptanceRate != null) {
+            "\nAcceptance: ${(donor.pastAcceptanceRate * 100).toInt()}% · Resp: ${donor.responseTimeAvg}m"
+        } else ""
+
+        holder.tvInfo.text = "Blood Group: ${donor.bloodGroup ?: "?"} · $distStr$aiStats"
 
         holder.btnChat.setOnClickListener { onChatClick(donor) }
         holder.itemView.setOnClickListener { onChatClick(donor) }

@@ -110,7 +110,9 @@ data class NearbyDonor(
     val city: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    @SerializedName("distance_km") val distanceKm: Double? = null
+    @SerializedName("distance_km") val distanceKm: Double? = null,
+    val pastAcceptanceRate: Double? = null,
+    val responseTimeAvg: Int? = null
 )
 
 data class NearbyPatient(
@@ -147,4 +149,38 @@ data class NearbyRequestsResponse(
     val message: String,
     val count: Int,
     val requests: List<NearbyRequest>
+)
+
+data class EmergencySearchRequest(
+    @SerializedName("patient_id") val patientId: Int,
+    @SerializedName("blood_group") val bloodGroup: String,
+    val lat: Double,
+    val lng: Double,
+    @SerializedName("units_required") val unitsRequired: Int = 1,
+    @SerializedName("radius_km") val radiusKm: Double = 5.0
+)
+
+data class RankedDonor(
+    @SerializedName("donor_id") val donorId: Int,
+    val name: String? = null,
+    val email: String? = null,
+    val phone: String? = null,
+    @SerializedName("blood_group") val bloodGroup: String? = null,
+    val age: Int? = null,
+    val city: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    @SerializedName("distance_km") val distanceKm: Double? = null,
+    @SerializedName("blood_match_score") val bloodMatchScore: Double? = null,
+    @SerializedName("is_available") val isAvailable: Int? = null,
+    @SerializedName("is_eligible") val isEligible: Int? = null,
+    @SerializedName("past_acceptance_rate") val pastAcceptanceRate: Double? = null,
+    @SerializedName("response_time_avg") val responseTimeAvg: Int? = null,
+    @SerializedName("ai_score") val aiScore: Double? = null
+)
+
+data class EmergencySearchResponse(
+    val message: String,
+    @SerializedName("best_donor") val bestDonor: RankedDonor?,
+    @SerializedName("nearby_donors") val nearbyDonors: List<RankedDonor>
 )

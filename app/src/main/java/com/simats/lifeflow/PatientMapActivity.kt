@@ -70,7 +70,7 @@ class PatientMapActivity : BaseActivity() {
         requiredBloodGroup = intent.getStringExtra("BLOOD_TYPE") ?: "O+"
         isEmergencyMode = intent.getBooleanExtra("EMERGENCY_MODE", false)
         fromEmergency = intent.getBooleanExtra("FROM_EMERGENCY", false)
-        units = intent.getIntExtra("UNITS", 1)
+        units = intent.getIntExtra("UNITS_NEEDED", intent.getIntExtra("UNITS", 1))
 
         tvMatchingCount = findViewById(R.id.tv_matching_count)
         llEmergencyBanner = findViewById(R.id.ll_emergency_banner)
@@ -211,71 +211,122 @@ class PatientMapActivity : BaseActivity() {
 
         // Use "ALL" to get all blood groups if needed
         val bloodGroupQuery = bg.uppercase()
+        
+        if (isEmergencyMode || fromEmergency) {
+            val patientId = getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getInt("user_id", -1)
+            val req = EmergencySearchRequest(
+                patientId = patientId,
+                bloodGroup = bloodGroupQuery,
+                lat = lat,
+                lng = lng,
+                unitsRequired = units,
+                radiusKm = 10.0
+            )
 
-        ApiClient.instance.getNearbyDonors(bloodGroupQuery, lat, lng, 10.0)
-            .enqueue(object : Callback<List<NearbyDonor>> {
-                override fun onResponse(call: Call<List<NearbyDonor>>, response: Response<List<NearbyDonor>>) {
+            ApiClient.instance.emergencyDonors(req).enqueue(object : Callback<EmergencySearchResponse> {
+                override fun onResponse(call: Call<EmergencySearchResponse>, response: Response<EmergencySearchResponse>) {
                     pbSearching.visibility = View.GONE
                     if (response.isSuccessful && !isFinishing) {
-                        val donors = response.body() ?: emptyList()
-                        tvMatchingCount.text = "${donors.size} Donor${if (donors.size != 1) "s" else ""} Nearby"
-
-                        // Clear only donor/hospital markers, keep "You"
-                        map.overlays.removeAll { it is Marker && it.title != "You" }
+                        val body = response.body()
+                        val rankedDonors = body?.nearbyDonors ?: emptyList()
+                        tvMatchingCount.text = "${rankedDonors.size} AI-Matched Donor(s)"
                         
-                        loadNearbyHospitals(lat, lng)
-
-                        nearbyDonorList.clear()
-                        nearbyDonorList.addAll(donors)
-                        donorListAdapter.notifyDataSetChanged()
-
-                        // Show / hide donor list panel
-                        llDonorList.visibility = View.VISIBLE
-                        tvNoDonors.visibility = if (donors.isEmpty()) View.VISIBLE else View.GONE
-                        rvNearbyDonors.visibility = if (donors.isNotEmpty()) View.VISIBLE else View.GONE
-
-                        for (d in donors) {
-                            val dLat = d.latitude ?: continue
-                            val dLng = d.longitude ?: continue
-                            
-                            val marker = Marker(map)
-                            marker.position = GeoPoint(dLat, dLng)
-                            marker.title = "${d.name ?: "Donor"} (${d.bloodGroup ?: "?"})"
-                            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-                            
-                            val icon = ContextCompat.getDrawable(this@PatientMapActivity, R.drawable.ic_location)?.mutate()
-                            icon?.setTint(ContextCompat.getColor(this@PatientMapActivity, R.color.bright_red))
-                            marker.icon = icon
-                            
-                            marker.setOnMarkerClickListener { m, _ ->
-                                showDonorOptions(d.donorUserId ?: -1, d.name ?: "Donor", d.bloodGroup ?: requiredBloodGroup)
-                                true
-                            }
-                            
-                            map.overlays.add(marker)
+                        val mappedDonors = rankedDonors.map { r ->
+                            NearbyDonor(
+                                donorUserId = r.donorId,
+                                name = r.name,
+                                phone = r.phone,
+                                bloodGroup = r.bloodGroup,
+                                city = r.city,
+                                latitude = r.latitude,
+                                longitude = r.longitude,
+                                distanceKm = r.distanceKm,
+                                pastAcceptanceRate = r.pastAcceptanceRate,
+                                responseTimeAvg = r.responseTimeAvg
+                            )
                         }
-                        map.invalidate()
-
-                        lastLoadedLocation = Location("").apply {
-                            latitude = lat
-                            longitude = lng
-                        }
-
-                        if (donors.isEmpty()) {
-                            Toast.makeText(this@PatientMapActivity, "No donors found nearby. Expanding search...", Toast.LENGTH_LONG).show()
-                        }
+                        updateMapWithDonors(mappedDonors, lat, lng)
                     } else {
-                        Log.e("PatientMap", "Error loading donors: ${response.code()}")
-                        Toast.makeText(this@PatientMapActivity, "Could not load donors (${response.code()})", Toast.LENGTH_SHORT).show()
+                        Log.e("PatientMap", "Error loading AI donors: ${response.code()}")
+                        Toast.makeText(this@PatientMapActivity, "AI Match failed (${response.code()})", Toast.LENGTH_SHORT).show()
                     }
                 }
 
-                override fun onFailure(call: Call<List<NearbyDonor>>, t: Throwable) {
+                override fun onFailure(call: Call<EmergencySearchResponse>, t: Throwable) {
                     pbSearching.visibility = View.GONE
                     Log.e("PatientMap", "Network failure", t)
                     if (!isFinishing) Toast.makeText(this@PatientMapActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
+        } else {
+            ApiClient.instance.getNearbyDonors(bloodGroupQuery, lat, lng, 10.0)
+                .enqueue(object : Callback<List<NearbyDonor>> {
+                    override fun onResponse(call: Call<List<NearbyDonor>>, response: Response<List<NearbyDonor>>) {
+                        pbSearching.visibility = View.GONE
+                        if (response.isSuccessful && !isFinishing) {
+                            val donors = response.body() ?: emptyList()
+                            tvMatchingCount.text = "${donors.size} Donor${if (donors.size != 1) "s" else ""} Nearby"
+                            updateMapWithDonors(donors, lat, lng)
+                        } else {
+                            Log.e("PatientMap", "Error loading donors: ${response.code()}")
+                            Toast.makeText(this@PatientMapActivity, "Could not load donors (${response.code()})", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onFailure(call: Call<List<NearbyDonor>>, t: Throwable) {
+                        pbSearching.visibility = View.GONE
+                        Log.e("PatientMap", "Network failure", t)
+                        if (!isFinishing) Toast.makeText(this@PatientMapActivity, "Network error: ${t.message}", Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
+    }
+
+    private fun updateMapWithDonors(donors: List<NearbyDonor>, lat: Double, lng: Double) {
+        // Clear only donor/hospital markers, keep "You"
+        map.overlays.removeAll { it is Marker && it.title != "You" }
+        
+        loadNearbyHospitals(lat, lng)
+
+        nearbyDonorList.clear()
+        nearbyDonorList.addAll(donors)
+        donorListAdapter.notifyDataSetChanged()
+
+        // Show / hide donor list panel
+        llDonorList.visibility = View.VISIBLE
+        tvNoDonors.visibility = if (donors.isEmpty()) View.VISIBLE else View.GONE
+        rvNearbyDonors.visibility = if (donors.isNotEmpty()) View.VISIBLE else View.GONE
+
+        for (d in donors) {
+            val dLat = d.latitude ?: continue
+            val dLng = d.longitude ?: continue
+            
+            val marker = Marker(map)
+            marker.position = GeoPoint(dLat, dLng)
+            marker.title = "${d.name ?: "Donor"} (${d.bloodGroup ?: "?"})"
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+            
+            val icon = ContextCompat.getDrawable(this@PatientMapActivity, R.drawable.ic_location)?.mutate()
+            icon?.setTint(ContextCompat.getColor(this@PatientMapActivity, R.color.bright_red))
+            marker.icon = icon
+            
+            marker.setOnMarkerClickListener { m, _ ->
+                showDonorOptions(d.donorUserId ?: -1, d.name ?: "Donor", d.bloodGroup ?: requiredBloodGroup)
+                true
+            }
+            
+            map.overlays.add(marker)
+        }
+        map.invalidate()
+
+        lastLoadedLocation = Location("").apply {
+            latitude = lat
+            longitude = lng
+        }
+
+        if (donors.isEmpty()) {
+            Toast.makeText(this@PatientMapActivity, "No donors found nearby. Expanding search...", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun loadNearbyHospitals(lat: Double, lng: Double) {

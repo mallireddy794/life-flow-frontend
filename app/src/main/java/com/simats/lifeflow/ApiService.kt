@@ -109,4 +109,12 @@ interface ApiService {
     fun getNearbyRequests(
         @Query("donor_id") donorId: Int
     ): Call<NearbyRequestsResponse>
+
+    // Chatbot API Support
+    @POST("chatbot/message")
+    fun sendChatbotMessage(@Body request: ChatbotRequest): Call<ChatbotResponse>
+
+    // AI Emergency Match Support
+    @POST("emergency-donors")
+    fun emergencyDonors(@Body request: EmergencySearchRequest): Call<EmergencySearchResponse>
 }

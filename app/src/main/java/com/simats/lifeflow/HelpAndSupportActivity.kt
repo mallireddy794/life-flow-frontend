@@ -16,7 +16,7 @@ class HelpAndSupportActivity : BaseActivity() {
         }
 
         cardAiChat.setOnClickListener {
-            android.content.Intent(this, AIAssistantActivity::class.java).also {
+            android.content.Intent(this, ChatbotActivity::class.java).also {
                 startActivity(it)
             }
         }

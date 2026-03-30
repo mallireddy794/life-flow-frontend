@@ -176,6 +176,9 @@
         <activity
             android:name=".FreeMapActivity"
             android:exported="false" />
+        <activity
+            android:name=".ChatbotActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

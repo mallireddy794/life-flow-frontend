@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
@@ -26,6 +27,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class DonorDashboardActivity : BaseActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
@@ -39,6 +41,14 @@ class DonorDashboardActivity : BaseActivity() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private var userId: Int = -1
+
+    // Rating widgets
+    private lateinit var rbMyRating: RatingBar
+    private lateinit var tvMyRatingValue: TextView
+    private lateinit var tvTotalReviews: TextView
+    private lateinit var llLatestReview: LinearLayout
+    private lateinit var tvLatestReviewText: TextView
+    private lateinit var tvLatestSentiment: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +86,14 @@ class DonorDashboardActivity : BaseActivity() {
         val appPrefs = getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
         val userName = appPrefs.getString("user_name", "Donor")
         tvUserName.text = userName
+
+        // Initialize rating widgets
+        rbMyRating = findViewById(R.id.rb_my_rating)
+        tvMyRatingValue = findViewById(R.id.tv_my_rating_value)
+        tvTotalReviews = findViewById(R.id.tv_total_reviews)
+        llLatestReview = findViewById(R.id.ll_latest_review)
+        tvLatestReviewText = findViewById(R.id.tv_latest_review_text)
+        tvLatestSentiment = findViewById(R.id.tv_latest_sentiment)
 
         rvNearbyRequests.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         adapter = NearbyRequestAdapter(emptyList())
@@ -131,6 +149,7 @@ class DonorDashboardActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
         checkLocationAndFetchRequests()
+        if (userId != -1) loadDonorRatings()
     }
 
     private fun checkLocationAndFetchRequests() {
@@ -259,5 +278,46 @@ class DonorDashboardActivity : BaseActivity() {
                 android.util.Log.e("DonorDashboard", "Location sync failed")
             }
         })
+    }
+
+    private fun loadDonorRatings() {
+        ApiClient.instance.getDonorReviews(userId).enqueue(object : Callback<DonorReviewsResponse> {
+            override fun onResponse(call: Call<DonorReviewsResponse>, response: Response<DonorReviewsResponse>) {
+                if (response.isSuccessful) {
+                    val data = response.body() ?: return
+                    val avg = data.averageRating
+                    val total = data.totalReviews
+                    rbMyRating.rating = avg
+                    tvMyRatingValue.text = if (total == 0) "No ratings yet" else String.format("%.1f / 5.0", avg)
+                    tvTotalReviews.text = if (total == 1) "1 review" else "$total reviews"
+
+                    // Find latest actual review text
+                    val latestReview = data.reviews.firstOrNull { !it.reviewText.isNullOrEmpty() }
+                    if (latestReview != null) {
+                        llLatestReview.visibility = View.VISIBLE
+                        tvLatestReviewText.text = "\"${latestReview.reviewText}\""
+                        val sentimentScore = latestReview.sentimentScore
+                        tvLatestSentiment.text = getSentimentLabel(sentimentScore)
+                        tvLatestSentiment.setTextColor(
+                            if (sentimentScore >= 0.5f) 0xFF166534.toInt() else 0xFF991B1B.toInt()
+                        )
+                    } else {
+                        llLatestReview.visibility = View.GONE
+                    }
+                }
+            }
+            override fun onFailure(call: Call<DonorReviewsResponse>, t: Throwable) {
+                android.util.Log.e("DonorDashboard", "Failed to load ratings: ${t.message}")
+            }
+        })
+    }
+
+    private fun getSentimentLabel(score: Float): String = when {
+        score >= 0.8f -> "Very Positive"
+        score >= 0.6f -> "Positive"
+        score >= 0.4f -> "Neutral"
+        score >= 0.2f -> "Negative"
+        score > 0f    -> "Very Negative"
+        else          -> "Neutral"
     }
 }

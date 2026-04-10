@@ -179,6 +179,9 @@
         <activity
             android:name=".ChatbotActivity"
             android:exported="false" />
+        <activity
+            android:name=".RateDonorActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

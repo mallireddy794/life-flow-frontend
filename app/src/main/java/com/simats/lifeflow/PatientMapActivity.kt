@@ -110,7 +110,9 @@ class PatientMapActivity : BaseActivity() {
                 showDonorOptions(id, donor.name ?: "Donor", donor.bloodGroup ?: requiredBloodGroup)
             }
         }
-        rvNearbyDonors.layoutManager = LinearLayoutManager(this)
+        rvNearbyDonors.layoutManager = LinearLayoutManager(this).apply {
+            isItemPrefetchEnabled = false
+        }
         rvNearbyDonors.adapter = donorListAdapter
 
         setupLocationCallback()
@@ -126,6 +128,16 @@ class PatientMapActivity : BaseActivity() {
                     updateLocationOnServer(location)
                 }
             }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::fused.isInitialized && ::locationCallback.isInitialized) {
+            fused.removeLocationUpdates(locationCallback)
+        }
+        if (::map.isInitialized) {
+            map.onDetach()
         }
     }
 
@@ -178,7 +190,7 @@ class PatientMapActivity : BaseActivity() {
             isFirstLocationUpdate = false
             loadNearbyDonors(requiredBloodGroup, loc.latitude, loc.longitude)
         } else if (lastLoadedLocation == null || loc.distanceTo(lastLoadedLocation!!) > 500) {
-            loadNearbyDonors(requiredBloodGroup, loc.latitude, loc.longitude)
+            if (!isFinishing) loadNearbyDonors(requiredBloodGroup, loc.latitude, loc.longitude)
         }
         
         updateUserMarker(patientPos)
@@ -229,7 +241,7 @@ class PatientMapActivity : BaseActivity() {
                     if (response.isSuccessful && !isFinishing) {
                         val body = response.body()
                         val rankedDonors = body?.nearbyDonors ?: emptyList()
-                        tvMatchingCount.text = "${rankedDonors.size} AI-Matched Donor(s)"
+                        if (!isFinishing) tvMatchingCount.text = "${rankedDonors.size} AI-Matched Donor(s)"
                         
                         val mappedDonors = rankedDonors.map { r ->
                             NearbyDonor(
@@ -248,7 +260,7 @@ class PatientMapActivity : BaseActivity() {
                         updateMapWithDonors(mappedDonors, lat, lng)
                     } else {
                         Log.e("PatientMap", "Error loading AI donors: ${response.code()}")
-                        Toast.makeText(this@PatientMapActivity, "AI Match failed (${response.code()})", Toast.LENGTH_SHORT).show()
+                        if (!isFinishing) Toast.makeText(this@PatientMapActivity, "AI Match failed (${response.code()})", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -267,7 +279,7 @@ class PatientMapActivity : BaseActivity() {
                             val donors = response.body() ?: emptyList()
                             tvMatchingCount.text = "${donors.size} Donor${if (donors.size != 1) "s" else ""} Nearby"
                             updateMapWithDonors(donors, lat, lng)
-                        } else {
+                        } else if (!isFinishing) {
                             Log.e("PatientMap", "Error loading donors: ${response.code()}")
                             Toast.makeText(this@PatientMapActivity, "Could not load donors (${response.code()})", Toast.LENGTH_SHORT).show()
                         }
@@ -347,20 +359,30 @@ class PatientMapActivity : BaseActivity() {
         map.invalidate()
     }
 
-    /** Shows a dialog: Chat (to fix appointment) OR Send Request */
+    /** Shows a dialog: Chat (to fix appointment) OR Send Request OR Rate Donor */
     private fun showDonorOptions(donorId: Int, donorName: String, bloodGroup: String) {
+        val options = arrayOf("💬 Chat & Fix Appointment", "📩 Send Request", "⭐ Rate Donor")
         AlertDialog.Builder(this)
             .setTitle("🩸 $donorName")
-            .setMessage("Blood Type: $bloodGroup\n\nChat to fix an appointment or send a direct request.")
-            .setPositiveButton("💬 Chat & Fix Appointment") { _, _ ->
-                openChatWithDonor(donorId, donorName, bloodGroup)
-            }
-            .setNeutralButton("📩 Send Request") { _, _ ->
-                sendRequestToDonor(donorId, donorName)
+            .setMessage("Blood Type: $bloodGroup")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> openChatWithDonor(donorId, donorName, bloodGroup)
+                    1 -> sendRequestToDonor(donorId, donorName)
+                    2 -> openRateDonor(donorId, donorName)
+                }
             }
             .setNegativeButton("Cancel", null)
             .show()
     }
+
+    private fun openRateDonor(donorId: Int, donorName: String) {
+        val intent = Intent(this, RateDonorActivity::class.java)
+        intent.putExtra("DONOR_ID", donorId)
+        intent.putExtra("DONOR_NAME", donorName)
+        startActivity(intent)
+    }
+
 
     private fun openChatWithDonor(donorId: Int, donorName: String, bloodGroup: String) {
         val patientId = getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getInt("user_id", -1)
@@ -419,12 +441,5 @@ class PatientMapActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         map.onPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        if (::fused.isInitialized && ::locationCallback.isInitialized) {
-            fused.removeLocationUpdates(locationCallback)
-        }
     }
 }

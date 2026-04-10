@@ -66,6 +66,31 @@ class PatientDashboardActivity : BaseActivity() {
             startActivity(Intent(this, NearbyHospitalsActivity::class.java))
         }
 
+        findViewById<androidx.appcompat.widget.AppCompatButton>(R.id.btn_rate_donor_dash).setOnClickListener {
+            // Fetch the most recent donor this patient has interacted with
+            ApiClient.instance.getDonors().enqueue(object : Callback<List<User>> {
+                override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+                    val donors = response.body()
+                    if (!donors.isNullOrEmpty()) {
+                        val donor = donors.first()
+                        val intent = Intent(this@PatientDashboardActivity, RateDonorActivity::class.java)
+                        intent.putExtra("DONOR_ID", donor.id ?: -1)
+                        intent.putExtra("DONOR_NAME", donor.name ?: "")
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this@PatientDashboardActivity,
+                            "No donors available to rate. Rate a donor from the Map screen.",
+                            Toast.LENGTH_LONG).show()
+                    }
+                }
+                override fun onFailure(call: Call<List<User>>, t: Throwable) {
+                    Toast.makeText(this@PatientDashboardActivity,
+                        "Could not load donors. Please try again.",
+                        Toast.LENGTH_SHORT).show()
+                }
+            })
+        }
+
         ivNotifications.setOnClickListener {
             startActivity(Intent(this, PatientNotificationsActivity::class.java))
         }

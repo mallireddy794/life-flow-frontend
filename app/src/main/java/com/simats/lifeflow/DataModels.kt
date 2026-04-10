@@ -112,7 +112,10 @@ data class NearbyDonor(
     val longitude: Double? = null,
     @SerializedName("distance_km") val distanceKm: Double? = null,
     val pastAcceptanceRate: Double? = null,
-    val responseTimeAvg: Int? = null
+    val responseTimeAvg: Int? = null,
+    @SerializedName("avg_rating") val avgRating: Float = 0.0f,
+    @SerializedName("sentiment_score") val sentimentScore: Float = 0.0f,
+    @SerializedName("total_reviews") val totalReviews: Int = 0
 )
 
 data class NearbyPatient(
@@ -176,7 +179,10 @@ data class RankedDonor(
     @SerializedName("is_eligible") val isEligible: Int? = null,
     @SerializedName("past_acceptance_rate") val pastAcceptanceRate: Double? = null,
     @SerializedName("response_time_avg") val responseTimeAvg: Int? = null,
-    @SerializedName("ai_score") val aiScore: Double? = null
+    @SerializedName("ai_score") val aiScore: Double? = null,
+    @SerializedName("avg_rating") val avgRating: Float = 0.0f,
+    @SerializedName("sentiment_score") val sentimentScore: Float = 0.0f,
+    @SerializedName("total_reviews") val totalReviews: Int = 0
 )
 
 data class EmergencySearchResponse(
@@ -184,3 +190,25 @@ data class EmergencySearchResponse(
     @SerializedName("best_donor") val bestDonor: RankedDonor?,
     @SerializedName("nearby_donors") val nearbyDonors: List<RankedDonor>
 )
+
+data class DonorRatingRequest(
+    @SerializedName("donor_id") val donorId: Int,
+    @SerializedName("patient_id") val patientId: Int,
+    val rating: Int,
+    @SerializedName("review_text") val reviewText: String
+)
+
+data class DonorReview(
+    val rating: Int = 0,
+    @SerializedName("review_text") val reviewText: String? = null,
+    @SerializedName("sentiment_score") val sentimentScore: Float = 0.0f,
+    @SerializedName("created_at") val createdAt: String? = null
+)
+
+data class DonorReviewsResponse(
+    @SerializedName("donor_id") val donorId: Int = 0,
+    val reviews: List<DonorReview> = emptyList(),
+    @SerializedName("average_rating") val averageRating: Float = 0.0f,
+    @SerializedName("total_reviews") val totalReviews: Int = 0
+)
+

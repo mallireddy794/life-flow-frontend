@@ -41,7 +41,7 @@ class PatientNotificationsActivity : BaseActivity() {
         setupNotification(
             findViewById(R.id.notif_3),
             "Donor Response",
-            "Sarah Johnson accepted your blood request",
+            "A nearby donor accepted your blood request",
             "30 min ago",
             R.drawable.ic_chat,
             R.drawable.bg_icon_circle_green,

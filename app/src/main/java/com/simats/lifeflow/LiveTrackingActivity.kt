@@ -72,7 +72,7 @@ class LiveTrackingActivity : BaseActivity(), OnMapReadyCallback {
             tvName.text = "City General Hospital"
             tvStatus.text = "Navigating to Hospital"
         } else {
-            tvName.text = "Sarah Johnson"
+            tvName.text = "Your Donor"
             tvStatus.text = "On the way to you"
         }
 
@@ -100,7 +100,7 @@ class LiveTrackingActivity : BaseActivity(), OnMapReadyCallback {
         donorMarker = mMap.addMarker(
             MarkerOptions()
                 .position(donorPos)
-                .title("Donor: Sarah Johnson")
+                .title("Donor")
                 .icon(bitmapDescriptorFromVector(R.drawable.ic_location))
         )
 

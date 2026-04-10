@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
     // IMPORTANT: Base URL must always end with a /
     // Updated to the provided server IP
-    private const val BASE_URL = "http://192.168.0.7:5000/"
+    private const val BASE_URL = "http://192.168.163.61:8006/"
     
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY

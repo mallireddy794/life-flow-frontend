@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F8FAFC">
 
-    <!-- Header Section -->
+    <!-- Header -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -54,7 +53,7 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Donor Card 1: John Smith -->
+            <!-- ========== DONOR CARD 1 ========== -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,12 +63,13 @@
 
                 <TextView
                     android:id="@+id/tv_donor1_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="John Smith"
+                    android:text=""
                     android:textColor="@color/text_dark"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/badge1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -88,7 +88,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="98%"
+                        android:text="AI"
                         android:textColor="@color/success_green"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -111,10 +111,11 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_donor1_name" />
 
                 <TextView
+                    android:id="@+id/tv_dist1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="1.2 km"
+                    android:text="— km"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_loc1"
@@ -125,33 +126,81 @@
                     android:id="@+id/tv_blood1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Blood Group: O+"
+                    android:layout_marginTop="12dp"
+                    android:text="Blood Group: —"
                     android:textColor="@color/text_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_loc1" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_contact1"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_button_solid"
-                    android:drawableStart="@drawable/ic_phone_white"
-                    android:drawablePadding="12dp"
-                    android:paddingStart="60dp"
-                    android:text="Contact Donor"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="start|center_vertical"
+                <TextView
+                    android:id="@+id/tv_rating1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableStart="@drawable/ic_star"
+                    android:drawablePadding="4dp"
+                    android:text="No ratings yet"
+                    android:textColor="@color/text_dark"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_blood1" />
+
+                <TextView
+                    android:id="@+id/tv_sentiment1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_match_badge"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text=""
+                    android:textColor="@color/success_green"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_rating1"
+                    app:layout_constraintStart_toEndOf="@id/tv_rating1"
+                    app:layout_constraintTop_toTopOf="@id/tv_rating1" />
+
+                <!-- Action buttons row -->
+                <LinearLayout
+                    android:id="@+id/btn_row1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    app:layout_constraintTop_toBottomOf="@id/tv_rating1">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_contact1"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_button_solid"
+                        android:text="💬 Contact"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_rate1"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_button_solid_small"
+                        android:text="⭐ Rate"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Donor Card 2: Sarah Johnson -->
+            <!-- ========== DONOR CARD 2 ========== -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -161,12 +210,13 @@
 
                 <TextView
                     android:id="@+id/tv_donor2_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Sarah Johnson"
+                    android:text=""
                     android:textColor="@color/text_dark"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/badge2"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -185,7 +235,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="95%"
+                        android:text="AI"
                         android:textColor="@color/success_green"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -208,10 +258,11 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_donor2_name" />
 
                 <TextView
+                    android:id="@+id/tv_dist2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="2.5 km"
+                    android:text="— km"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_loc2"
@@ -222,33 +273,80 @@
                     android:id="@+id/tv_blood2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Blood Group: O+"
+                    android:layout_marginTop="12dp"
+                    android:text="Blood Group: —"
                     android:textColor="@color/text_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_loc2" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_contact2"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_button_solid"
-                    android:drawableStart="@drawable/ic_phone_white"
-                    android:drawablePadding="12dp"
-                    android:paddingStart="60dp"
-                    android:text="Contact Donor"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="start|center_vertical"
+                <TextView
+                    android:id="@+id/tv_rating2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableStart="@drawable/ic_star"
+                    android:drawablePadding="4dp"
+                    android:text="No ratings yet"
+                    android:textColor="@color/text_dark"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_blood2" />
+
+                <TextView
+                    android:id="@+id/tv_sentiment2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_match_badge"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text=""
+                    android:textColor="@color/success_green"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_rating2"
+                    app:layout_constraintStart_toEndOf="@id/tv_rating2"
+                    app:layout_constraintTop_toTopOf="@id/tv_rating2" />
+
+                <LinearLayout
+                    android:id="@+id/btn_row2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    app:layout_constraintTop_toBottomOf="@id/tv_rating2">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_contact2"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_button_solid"
+                        android:text="💬 Contact"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_rate2"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_button_solid_small"
+                        android:text="⭐ Rate"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Donor Card 3: Michael Brown -->
+            <!-- ========== DONOR CARD 3 ========== -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -258,12 +356,13 @@
 
                 <TextView
                     android:id="@+id/tv_donor3_name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Michael Brown"
+                    android:text=""
                     android:textColor="@color/text_dark"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/badge3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -282,7 +381,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="92%"
+                        android:text="AI"
                         android:textColor="@color/success_green"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -305,10 +404,11 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_donor3_name" />
 
                 <TextView
+                    android:id="@+id/tv_dist3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="3.8 km"
+                    android:text="— km"
                     android:textColor="@color/text_gray"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@id/iv_loc3"
@@ -319,29 +419,76 @@
                     android:id="@+id/tv_blood3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Blood Group: O+"
+                    android:layout_marginTop="12dp"
+                    android:text="Blood Group: —"
                     android:textColor="@color/text_gray"
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_loc3" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_contact3"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/bg_button_solid"
-                    android:drawableStart="@drawable/ic_phone_white"
-                    android:drawablePadding="12dp"
-                    android:paddingStart="60dp"
-                    android:text="Contact Donor"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="start|center_vertical"
+                <TextView
+                    android:id="@+id/tv_rating3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawableStart="@drawable/ic_star"
+                    android:drawablePadding="4dp"
+                    android:text="No ratings yet"
+                    android:textColor="@color/text_dark"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_blood3" />
+
+                <TextView
+                    android:id="@+id/tv_sentiment3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/bg_match_badge"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text=""
+                    android:textColor="@color/text_gray"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_rating3"
+                    app:layout_constraintStart_toEndOf="@id/tv_rating3"
+                    app:layout_constraintTop_toTopOf="@id/tv_rating3" />
+
+                <LinearLayout
+                    android:id="@+id/btn_row3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    app:layout_constraintTop_toBottomOf="@id/tv_rating3">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_contact3"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/bg_button_solid"
+                        android:text="💬 Contact"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btn_rate3"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/bg_button_solid_small"
+                        android:text="⭐ Rate"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

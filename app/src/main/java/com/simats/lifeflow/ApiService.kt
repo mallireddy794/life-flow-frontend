@@ -117,4 +117,11 @@ interface ApiService {
     // AI Emergency Match Support
     @POST("emergency-donors")
     fun emergencyDonors(@Body request: EmergencySearchRequest): Call<EmergencySearchResponse>
+
+    @POST("donor/rate")
+    fun rateDonor(@Body request: DonorRatingRequest): Call<Map<String, Any>>
+
+    @GET("donor-reviews/{donor_id}")
+    fun getDonorReviews(@Path("donor_id") donorId: Int): Call<DonorReviewsResponse>
 }
+

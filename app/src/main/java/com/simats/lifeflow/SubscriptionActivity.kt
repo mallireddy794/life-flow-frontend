@@ -229,9 +229,11 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
     private fun navigateToMain() {
         val sharedPrefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
         val role = sharedPrefs.getString("user_role", "")
+        val isComplete = sharedPrefs.getBoolean("is_profile_complete", false)
+        
         val intent = when (role) {
-            "donor" -> Intent(this, DonorDashboardActivity::class.java)
-            "patient" -> Intent(this, PatientDashboardActivity::class.java)
+            "donor" -> if (isComplete) Intent(this, DonorDashboardActivity::class.java) else Intent(this, DonorProfileActivity::class.java)
+            "patient" -> if (isComplete) Intent(this, PatientDashboardActivity::class.java) else Intent(this, PatientProfileActivity::class.java)
             else -> Intent(this, RoleSelectionActivity::class.java)
         }
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -118,6 +118,7 @@ class LoginActivity : BaseActivity() {
                         putInt("user_id", user?.id ?: -1)
                         putString("user_name", user?.name)
                         putString("user_role", actualRole)
+                        putBoolean("is_profile_complete", user?.isProfileComplete ?: false)
                     }.apply()
                     
                     val nextIntent = Intent(this@LoginActivity, SubscriptionActivity::class.java)

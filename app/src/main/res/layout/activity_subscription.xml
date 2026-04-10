@@ -328,21 +328,16 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Premium Access"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="$9.99 / month"
-                    android:textColor="@android:color/white"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="4dp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:text="Loading price..."
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
         </androidx.cardview.widget.CardView>
 
@@ -361,6 +356,9 @@
             app:backgroundTint="@android:color/white"
             app:cornerRadius="32dp"
             app:elevation="12dp"
+            app:icon="@drawable/ic_check_circle"
+            app:iconGravity="textEnd"
+            app:iconTint="@android:color/black"
             app:layout_constraintTop_toBottomOf="@id/priceCard"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

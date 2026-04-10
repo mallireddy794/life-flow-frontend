@@ -7,4 +7,21 @@
     <string name="get_help">Get Help</string>
     <string name="login">Login</string>
     <string name="get_started">Get Started</string>
+    <string name="lifeflow_ai">LifeFlow AI</string>
+    <string name="smart_blood_connect">SMART BLOOD CONNECT</string>
+    <string name="sub_desc">Find the right donor instantly with AI-pow matching designed for emergencies</string>
+    <string name="instant_donor_matching">Instant Donor Matching</string>
+    <string name="matching_desc">Find compatible blood donors nearby in seconds</string>
+    <string name="real_time_tracking">Real-Time Location Tracking</string>
+    <string name="tracking_desc">Get donors based on your current location</string>
+    <string name="direct_communication">Direct Communication</string>
+    <string name="communication_desc">Connect with donors instantly through chat</string>
+    <string name="emergency_support_plan">Emergency Support Plan</string>
+    <string name="free_access">FREE ACCESS</string>
+    <string name="plan_footer">Built for saving lives, always accessible</string>
+    <string name="one_month_plan">1 Month  ₹10</string>
+    <string name="one_year_plan">1 Year  ₹99</string>
+    <string name="best_value">Best Value</string>
+    <string name="community_support">By continuing, you support a life-saving community</string>
+    <string name="maybe_later">Maybe Later</string>
 </resources>

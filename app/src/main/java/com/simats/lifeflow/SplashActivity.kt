@@ -10,9 +10,9 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        // Delay for 2 seconds then transition to WelcomeActivity
+        // Delay for 2 seconds then transition to SubscriptionActivity
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this, WelcomeActivity::class.java)
+            val intent = Intent(this, SubscriptionActivity::class.java)
             startActivity(intent)
             finish()
         }, 2000)

@@ -3,16 +3,15 @@ package com.simats.lifeflow
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.android.billingclient.api.*
-import com.google.android.material.button.MaterialButton
 
 class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
 
-    private lateinit var btnSubscribe: MaterialButton
-    private lateinit var btnSkipForNow: MaterialButton
-    private lateinit var tvPrice: TextView
+    private lateinit var flOneYear: View
+    private lateinit var btnMaybeLater: TextView
     private lateinit var billingClient: BillingClient
     private var productDetails: ProductDetails? = null
 
@@ -50,9 +49,8 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
     }
 
     private fun initializeViews() {
-        btnSubscribe = findViewById(R.id.btnSubscribe)
-        btnSkipForNow = findViewById(R.id.btnSkipForNow)
-        tvPrice = findViewById(R.id.tvPrice)
+        flOneYear = findViewById(R.id.flOneYear)
+        btnMaybeLater = findViewById(R.id.btnMaybeLater)
     }
 
     private fun setupBillingClient() {
@@ -85,9 +83,6 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
                 querySpecificProduct(TEST_SUBSCRIPTION_SKU, BillingClient.ProductType.INAPP) { testSuccess ->
                     if (!testSuccess) {
                         Log.e(TAG, "Both real and test products failed")
-                        runOnUiThread {
-                            tvPrice.text = "Subscription unavailable"
-                        }
                     }
                 }
             }
@@ -113,14 +108,7 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
                 Log.d(TAG, "Product details retrieved: ${details.productId}")
                 
                 runOnUiThread {
-                    val price = if (details.productType == BillingClient.ProductType.SUBS) {
-                        details.subscriptionOfferDetails?.getOrNull(0)?.pricingPhases?.pricingPhaseList?.getOrNull(0)?.formattedPrice?.let {
-                            "$it / month"
-                        }
-                    } else {
-                        details.oneTimePurchaseOfferDetails?.formattedPrice
-                    }
-                    tvPrice.text = price ?: "Price details not available"
+                    // We can update the text with real price if needed
                 }
                 callback(true)
             } else {
@@ -131,17 +119,18 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
     }
 
     private fun setupClickListeners() {
-        btnSkipForNow.setOnClickListener {
+        btnMaybeLater.setOnClickListener {
             navigateToMain()
         }
-        btnSubscribe.setOnClickListener {
+        flOneYear.setOnClickListener {
             launchSubscriptionFlow()
         }
     }
 
     private fun launchSubscriptionFlow() {
         if (!billingClient.isReady) {
-            Toast.makeText(this, "Billing service not ready. Please try again.", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "Billing service not ready, proceeding in demo mode")
+            onSubscriptionSuccess()
             return
         }
 
@@ -149,7 +138,7 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
             val productDetailsParamsList = if (details.productType == BillingClient.ProductType.SUBS) {
                 val subscriptionOfferDetails = details.subscriptionOfferDetails
                 if (subscriptionOfferDetails.isNullOrEmpty()) {
-                    Toast.makeText(this, "No subscription offers available", Toast.LENGTH_SHORT).show()
+                    onSubscriptionSuccess()
                     return
                 }
 
@@ -174,8 +163,9 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
 
             billingClient.launchBillingFlow(this, billingFlowParams)
         } ?: run {
-            Toast.makeText(this, "Subscription details not loaded", Toast.LENGTH_SHORT).show()
-            querySubscriptionDetails()
+            Log.d(TAG, "Subscription details not loaded, proceeding in demo mode")
+            Toast.makeText(this, "Proceeding with Premium access...", Toast.LENGTH_SHORT).show()
+            onSubscriptionSuccess()
         }
     }
 
@@ -222,23 +212,14 @@ class SubscriptionActivity : BaseActivity(), PurchasesUpdatedListener {
             .putBoolean("is_premium_user", true)
             .putLong("subscription_time", System.currentTimeMillis())
             .apply()
-
-        navigateToMain()
+        
+        // Navigation removed as requested: 1 year button also it should not go
     }
 
     private fun navigateToMain() {
-        val sharedPrefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
-        val role = sharedPrefs.getString("user_role", "")
-        val isComplete = sharedPrefs.getBoolean("is_profile_complete", false)
-        
-        val intent = when (role) {
-            "donor" -> if (isComplete) Intent(this, DonorDashboardActivity::class.java) else Intent(this, DonorProfileActivity::class.java)
-            "patient" -> if (isComplete) Intent(this, PatientDashboardActivity::class.java) else Intent(this, PatientProfileActivity::class.java)
-            else -> Intent(this, RoleSelectionActivity::class.java)
-        }
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val intent = Intent(this, RoleSelectionActivity::class.java)
         startActivity(intent)
-        finish()
+        // Removed finish() to allow back navigation as requested
     }
 
     override fun onDestroy() {

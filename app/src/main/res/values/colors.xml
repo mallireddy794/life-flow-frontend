@@ -25,4 +25,12 @@
     <color name="text_cool_gray">#718096</color>
     <color name="success_emerald">#38A169</color>
     <color name="primary_blue">#3B82F6</color>
+    <color name="sub_purple_start">#9D50BB</color>
+    <color name="sub_purple_end">#6E48AA</color>
+    <color name="sub_red_start">#FF4B4B</color>
+    <color name="sub_red_end">#FF8E8E</color>
+    <color name="sub_bg_gradient_start">#E6E9FE</color>
+    <color name="sub_bg_gradient_end">#F3F4FF</color>
+    <color name="sub_badge_yellow">#F6AD55</color>
+    <color name="sub_text_purple">#6A529D</color>
 </resources>

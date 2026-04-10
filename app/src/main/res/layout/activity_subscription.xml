@@ -3,404 +3,403 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0E27"
+    android:background="@drawable/bg_subscription_main"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/app_name_color"
-        android:paddingBottom="32dp">
+        android:padding="24dp">
 
-        <!-- Gradient Background Overlay -->
-        <View
-            android:id="@+id/gradientOverlay"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Floating Logo Container -->
+        <!-- Logo Container -->
         <androidx.cardview.widget.CardView
             android:id="@+id/logoCard"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_marginTop="60dp"
-            app:cardCornerRadius="32dp"
-            app:cardElevation="24dp"
-            app:cardBackgroundColor="@android:color/white"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="32dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#00FFFFFF"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/img_1"
-                    android:contentDescription="App Logo" />
-
-                <!-- Premium Badge -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="-8dp"
-                    android:layout_marginEnd="-8dp"
-                    android:text="✨"
-                    android:textSize="28sp"
-                    android:elevation="2dp" />
-
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:src="@drawable/img_1"
+                android:padding="12dp" />
 
         </androidx.cardview.widget.CardView>
 
-        <!-- Title Section -->
+        <!-- Title -->
         <TextView
-            android:id="@+id/titleText"
+            android:id="@+id/tvLifeFlowAi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="LifeFlow"
-            android:textSize="36sp"
+            android:layout_marginTop="16dp"
+            android:text="@string/lifeflow_ai"
+            android:textSize="32sp"
             android:textStyle="bold"
-            android:textColor="?attr/inverse"
-            android:letterSpacing="0.02"
+            android:textColor="#2D3748"
             app:layout_constraintTop_toBottomOf="@id/logoCard"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/premiumBadge"
+            android:id="@+id/tvSmartConnect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="PREMIUM"
+            android:layout_marginTop="4dp"
+            android:text="@string/smart_blood_connect"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:textColor="#FFD700"
-            android:letterSpacing="0.15"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            app:layout_constraintTop_toBottomOf="@id/titleText"
+            android:textColor="@color/sub_text_purple"
+            android:letterSpacing="0.1"
+            app:layout_constraintTop_toBottomOf="@id/tvLifeFlowAi"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <!-- Description -->
         <TextView
-            android:id="@+id/subtitleText"
+            android:id="@+id/tvDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="Unlock unlimited potential with premium features designed for your success"
+            android:text="@string/sub_desc"
             android:textSize="16sp"
-            android:textColor="#B8C5D6"
+            android:textColor="#718096"
             android:gravity="center"
-            android:lineSpacingExtra="4dp"
-            app:layout_constraintTop_toBottomOf="@id/premiumBadge"
+            app:layout_constraintTop_toBottomOf="@id/tvSmartConnect"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="16dp" />
 
-        <!-- Features Container -->
+        <!-- Features -->
         <LinearLayout
-            android:id="@+id/featuresContainer"
-            android:layout_width="0dp"
+            android:id="@+id/llFeatures"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="24dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/subtitleText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/tvDescription">
 
-            <!-- Feature Card 1 -->
+            <!-- Feature 1 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="#1A1F3A">
+                app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivMatchIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_bolt"
+                        app:tint="#F6AD55"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                     <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="🚨"
-                        android:textSize="28sp"
-                        android:gravity="center" />
-
-                    <LinearLayout
+                        android:id="@+id/tvMatchTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Priority Alerts"
-                            android:textSize="17sp"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Instant blood match notifications"
-                            android:textSize="14sp"
-                            android:textColor="#7C8AA8"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
+                        android:layout_marginStart="16dp"
+                        android:text="@string/instant_donor_matching"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#2D3748"
+                        app:layout_constraintStart_toEndOf="@id/ivMatchIcon"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ivMatchCheck" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="✓"
-                        android:textSize="20sp"
-                        android:textColor="#4CAF50"
-                        android:textStyle="bold" />
+                        android:text="@string/matching_desc"
+                        android:textSize="13sp"
+                        android:textColor="#718096"
+                        app:layout_constraintTop_toBottomOf="@id/tvMatchTitle"
+                        app:layout_constraintStart_toStartOf="@id/tvMatchTitle"
+                        app:layout_constraintEnd_toEndOf="@id/tvMatchTitle" />
 
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivMatchCheck"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_check"
+                        app:tint="@color/success_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Feature Card 2 -->
+            <!-- Feature 2 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="#1A1F3A">
+                app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivTrackIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_location"
+                        app:tint="#E53E3E"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                     <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="⚡"
-                        android:textSize="28sp"
-                        android:gravity="center" />
-
-                    <LinearLayout
+                        android:id="@+id/tvTrackTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ad-Free Experience"
-                            android:textSize="17sp"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pure experience, no interruptions"
-                            android:textSize="14sp"
-                            android:textColor="#7C8AA8"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
+                        android:layout_marginStart="16dp"
+                        android:text="@string/real_time_tracking"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#2D3748"
+                        app:layout_constraintStart_toEndOf="@id/ivTrackIcon"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ivTrackCheck" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="✓"
-                        android:textSize="20sp"
-                        android:textColor="#4CAF50"
-                        android:textStyle="bold" />
+                        android:text="@string/tracking_desc"
+                        android:textSize="13sp"
+                        android:textColor="#718096"
+                        app:layout_constraintTop_toBottomOf="@id/tvTrackTitle"
+                        app:layout_constraintStart_toStartOf="@id/tvTrackTitle"
+                        app:layout_constraintEnd_toEndOf="@id/tvTrackTitle" />
 
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivTrackCheck"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_check"
+                        app:tint="@color/success_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Feature Card 3 -->
+            <!-- Feature 3 -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
                 app:cardCornerRadius="20dp"
-                app:cardElevation="8dp"
-                app:cardBackgroundColor="#1A1F3A">
+                app:cardElevation="4dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="20dp"
-                    android:gravity="center_vertical">
+                    android:padding="16dp">
+
+                    <ImageView
+                        android:id="@+id/ivChatIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/ic_chat"
+                        app:tint="#319795"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
                     <TextView
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:text="💎"
-                        android:textSize="28sp"
-                        android:gravity="center" />
-
-                    <LinearLayout
+                        android:id="@+id/tvChatTitle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Advanced AI Insights"
-                            android:textSize="17sp"
-                            android:textStyle="bold"
-                            android:textColor="@android:color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Deep analytics and health predictions"
-                            android:textSize="14sp"
-                            android:textColor="#7C8AA8"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
+                        android:layout_marginStart="16dp"
+                        android:text="@string/direct_communication"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#2D3748"
+                        app:layout_constraintStart_toEndOf="@id/ivChatIcon"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/ivChatCheck" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="✓"
-                        android:textSize="20sp"
-                        android:textColor="#4CAF50"
-                        android:textStyle="bold" />
+                        android:text="@string/communication_desc"
+                        android:textSize="13sp"
+                        android:textColor="#718096"
+                        app:layout_constraintTop_toBottomOf="@id/tvChatTitle"
+                        app:layout_constraintStart_toStartOf="@id/tvChatTitle"
+                        app:layout_constraintEnd_toEndOf="@id/tvChatTitle" />
 
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/ivChatCheck"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_check"
+                        app:tint="@color/success_green"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent" />
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
 
-        <!-- Price Card -->
+        <!-- Emergency Plan Card -->
         <androidx.cardview.widget.CardView
-            android:id="@+id/priceCard"
-            android:layout_width="0dp"
+            android:id="@+id/cvEmergencyPlan"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="24dp"
             app:cardCornerRadius="24dp"
-            app:cardElevation="12dp"
-            app:cardBackgroundColor="#FF4B4B"
-            app:layout_constraintTop_toBottomOf="@id/featuresContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:cardElevation="8dp"
+            app:layout_constraintTop_toBottomOf="@id/llFeatures">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_emergency_plan"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvEmergencyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/emergency_support_plan"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvFreeAccess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/free_access"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/tvEmergencyTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/plan_footer"
+                    android:textColor="#E2E8F0"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvFreeAccess"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Subscription Options -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clOptions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-24dp"
+            android:background="@android:color/white"
+            android:elevation="6dp"
+            app:layout_constraintTop_toBottomOf="@id/cvEmergencyPlan"
+            app:cardCornerRadius="24dp"
+            android:padding="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp"
+                android:orientation="horizontal"
+                android:paddingTop="16dp"
+                android:clipChildren="false"
+                android:clipToPadding="false"
                 android:gravity="center">
 
-                <TextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="wrap_content"
+                <!-- 1 Year Option (Main Plan) -->
+                <FrameLayout
+                    android:id="@+id/flOneYear"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="16dp"
-                    android:text="Loading price..."
-                    android:textColor="@android:color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
+
+                    <TextView
+                        android:id="@+id/btnOneYear"
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:background="@drawable/bg_button_1year"
+                        android:gravity="center"
+                        android:text="@string/one_year_plan"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="-8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_best_value_badge"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="4dp"
+                        android:text="@string/best_value"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
 
             </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
-
-        <!-- Subscribe Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSubscribe"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:text="Start Premium"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            app:backgroundTint="@android:color/white"
-            app:cornerRadius="32dp"
-            app:elevation="12dp"
-            app:icon="@drawable/ic_check_circle"
-            app:iconGravity="textEnd"
-            app:iconTint="@android:color/black"
-            app:layout_constraintTop_toBottomOf="@id/priceCard"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Terms Text -->
+        <!-- Footer -->
         <TextView
-            android:id="@+id/termsText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:text="By continuing, you agree to our Terms &amp; Privacy Policy"
-            android:textSize="12sp"
-            android:textColor="#7C8AA8"
-            android:gravity="center"
-            app:layout_constraintTop_toBottomOf="@id/btnSubscribe"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Spacer for hidden button -->
-        <View
-            android:id="@+id/spacer"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:layout_constraintTop_toBottomOf="@id/termsText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Hidden Skip Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSkipForNow"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:id="@+id/tvCommunitySupport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Maybe later"
+            android:layout_marginTop="16dp"
+            android:text="@string/community_support"
+            android:textColor="#718096"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/clOptions"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/btnMaybeLater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:text="@string/maybe_later"
+            android:textColor="@color/sub_text_purple"
             android:textSize="14sp"
-            android:textColor="#7C8AA8"
-            android:textAllCaps="false"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/spacer"
+            android:textStyle="bold"
+            android:alpha="0.7"
+            android:letterSpacing="0.05"
+            app:layout_constraintTop_toBottomOf="@id/tvCommunitySupport"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />

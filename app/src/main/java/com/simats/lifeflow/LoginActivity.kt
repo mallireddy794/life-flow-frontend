@@ -120,13 +120,7 @@ class LoginActivity : BaseActivity() {
                         putString("user_role", actualRole)
                     }.apply()
                     
-                    val targetActivity = when (actualRole) {
-                        "donor" -> if (user.isProfileComplete) DonorDashboardActivity::class.java else DonorProfileActivity::class.java
-                        "patient" -> if (user.isProfileComplete) PatientDashboardActivity::class.java else PatientProfileActivity::class.java
-                        else -> DonorProfileActivity::class.java
-                    }
-                    
-                    val nextIntent = Intent(this@LoginActivity, targetActivity)
+                    val nextIntent = Intent(this@LoginActivity, SubscriptionActivity::class.java)
                     nextIntent.putExtra("user_id", user?.id)
                     startActivity(nextIntent)
                     finish()

@@ -16,5 +16,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "life flow"
+rootProject.name = "BloodDonationApp"
 include(":app")

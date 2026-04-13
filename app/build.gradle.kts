@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.simats.lifeflow"
+    namespace = "com.blooddonation.app"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.simats.lifeflow"
+        applicationId = "com.blooddonation.app"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

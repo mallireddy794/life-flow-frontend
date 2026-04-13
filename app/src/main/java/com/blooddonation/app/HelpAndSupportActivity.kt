@@ -1,0 +1,24 @@
+package com.blooddonation.app
+
+import android.os.Bundle
+import android.widget.ImageView
+
+class HelpAndSupportActivity : BaseActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_help_support)
+
+        val btnBack = findViewById<ImageView>(R.id.btn_back)
+        val cardAiChat = findViewById<androidx.cardview.widget.CardView>(R.id.card_ai_chat)
+
+        btnBack.setOnClickListener {
+            onBackPressed()
+        }
+
+        cardAiChat.setOnClickListener {
+            android.content.Intent(this, ChatbotActivity::class.java).also {
+                startActivity(it)
+            }
+        }
+    }
+}
